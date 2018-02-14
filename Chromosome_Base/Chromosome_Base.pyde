@@ -1,6 +1,10 @@
 from polygon import Polygon
+
+mrKVariable = 5; 
+
 def setup():
     size(100,100)
+    print mrKVariable
     pg = createGraphics(10,10)
     pg.beginDraw()
     pg.background(12,123,234)
