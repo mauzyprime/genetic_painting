@@ -1,6 +1,7 @@
 from polygon import Polygon
 
 mrKVariable = 5; 
+secondVariable = 10;
 
 def setup():
     size(100,100)
