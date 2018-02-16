@@ -33,9 +33,11 @@ def setup():
 def draw():
     pass
     
+    def willH(pGraphics):
+        pass
     
 class Chromosome:
-    def _init_(polygons,vertices,h,w):
+    def __init__(polygons,vertices,h,w):
         for i in range(polygons):#creates the array of chromosomes
             verticesList = []
             for i in range(vertices):
