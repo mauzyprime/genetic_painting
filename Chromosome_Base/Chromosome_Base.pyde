@@ -52,4 +52,5 @@ class Chromosome:
             #i.display(pGraphics)
             print "CHECK"
     def fitness(myPGraphics,originalImage):
+        #Nolan Wuz Here
         pass
