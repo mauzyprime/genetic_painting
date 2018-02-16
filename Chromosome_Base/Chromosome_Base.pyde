@@ -1,7 +1,8 @@
 from polygon import Polygon
 
-mrKVariable = 5; 
-secondVariable = 10;
+mrKVariable = 5
+secondVariable = 10
+nolanVariable = sqrt(-16)
 
 def setup():
     size(100,100)
