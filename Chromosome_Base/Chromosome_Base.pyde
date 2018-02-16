@@ -38,21 +38,22 @@ def draw():
     
 class Chromosome:
     def __init__(polygons,vertices,h,w):
+        self.polygonsArr = []
         for i in range(polygons):#creates the array of chromosomes
             verticesList = []
             for i in range(vertices):
                 verticesList.append([random(w),random(h)])
             nPolygon = Polygon(vertices, color(random(255),random(255),random(255),random(255)),verticesList)
-            polygonsArr.append(nPolygon)
+            self.polygonsArr.append(nPolygon)
         self.numVertices = vertices
         self.numPolygons = polygons
         self.pheight = h#height
         self.pwidth = w#width
+        self.pg = createGraphics(w,h)
         
-    def display(pGraphics):
+    def display(pg):
         for i in polygonsArr:
-            #i.display(pGraphics)
-            print "CHECK"
-    def fitness(myPGraphics,originalImage):
+            self.pg = i.display(self.pg)
+    def fitness(originalImage):
         #Nolan Wuz Here
         pass
