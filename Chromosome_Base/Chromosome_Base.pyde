@@ -2,6 +2,7 @@ from polygon import Polygon
 
 mrKVariable = 5; 
 secondVariable = 10;
+willHolzmanHomeworkDone = 1
 
 def setup():
     size(100,100)
