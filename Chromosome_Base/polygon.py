@@ -19,4 +19,8 @@ class Polygon():
         pGraphics.shape(s)
         pGraphics.endDraw()
         return(pGraphics)
+
+class katieGit():
+    def __init__(self, hello):
+        self.message = hello
         
