@@ -1,31 +1,36 @@
 from polygon import Polygon
 
-mrKVariable = 5; 
-secondVariable = 10;
+mrKVariable = 5
+secondVariable = 10
 willHolzmanHomeworkDone = 1
 nolanVariable = sqrt(-64)
 chromosome1 = None
 
 numPolys = 50
 numVertices = 4
+originalImg = None
 
 
 def setup():
     global chromosome1
-    size(100,100)
-    print mrKVariable
-
-    pg = createGraphics(10,10)
-    pg.beginDraw()
-    pg.background(12,123,234)
-    pg.endDraw()
+    global originalImg
+    originalImg = loadImage("monalisa.png")
+    size(500,500)
+    #print mrKVariable
     
-    img = createImage(10,10,RGB)
-    pg.loadPixels()
-    println(img)
-    println(img.pixels)
-    println(pg)
-    println(pg.get())
+    chromosome1 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
+
+    # pg = createGraphics(10,10)
+    # pg.beginDraw()
+    # pg.background(12,123,234)
+    # pg.endDraw()
+    
+    # img = createImage(10,10,RGB)
+    # pg.loadPixels()
+    # println(img)
+    # println(img.pixels)
+    # println(pg)
+    # println(pg.get())
     #println(pg.get().pixels)
     #for i in pg.get().pixels:
         #print(red(i))
@@ -37,11 +42,10 @@ def setup():
     #for i in pix:
         #i = color(127,127,127,127)
     #println(pix)
-    chromosome1 = Chromosome(numPolys, numVertices, height, width)
 def draw():
-    background(255)
+    background(127)
     global chromosome1
-    print(chromosome1)
+    #print(chromosome1)
     image(chromosome1.display(), 0,0)
     
 class Chromosome:
@@ -60,6 +64,9 @@ class Chromosome:
         self.pg = createGraphics(w,h)
         
     def display(self):
+        self.pg.beginDraw()
+        self.pg.background(255)
+        self.pg.endDraw()
         for i in self.polygonsArr:
             self.pg = i.display(self.pg)
         return self.pg
