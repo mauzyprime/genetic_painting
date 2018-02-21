@@ -57,3 +57,5 @@ class Chromosome:
     def fitness(originalImage):
         #Nolan Wuz Here
         pass
+        
+        
