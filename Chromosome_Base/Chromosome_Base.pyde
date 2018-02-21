@@ -65,6 +65,7 @@ class Chromosome:
         return self.pg
     def fitness(self, originalImage):
         #Nolan Wuz Here
-        pass
+        for i in  self.pg.get(pixels):
+            
         
         
