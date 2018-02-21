@@ -37,7 +37,7 @@ def draw():
         pass
     
 class Chromosome:
-    def __init__(polygons,vertices,h,w):
+    def __init__(self, polygons,vertices,h,w):
         self.polygonsArr = []
         for i in range(polygons):#creates the array of chromosomes
             verticesList = []
@@ -51,9 +51,10 @@ class Chromosome:
         self.pwidth = w#width
         self.pg = createGraphics(w,h)
         
-    def display(pg):
+    def display(self):
         for i in polygonsArr:
             self.pg = i.display(self.pg)
-    def fitness(originalImage):
+        return self.pg
+    def fitness(self, originalImage):
         #Nolan Wuz Here
         pass
