@@ -89,27 +89,30 @@ class Chromosome:
             for i2 in range(len(polygonsArr[i].vertexCoords)):#for every vertex of a polygon
                 polygonsArr[i].vertexCoords[i2][1] +=10 #add 10 to the y value of the vertex
         return 0#placeholder for now.
+    
+    
     def fitness(self, originalImage):
         #Nolan Wuz Here
         #original image is a PImage; chromosome is a PGraphics
-        print len(originalImage.pixels) #this is 200 x 200. the mona lisa
-        loadPixels()
-        print len(pixels) #this then is the current canvas, 500 x 500. which we don't really care about. 
-        #print len(self.pg.get().pixels)
+        #print len(originalImage.pixels) #this is 200 x 200. the mona lisa
+        self.pg.beginDraw()
+        self.pg.endDraw()
+        chro = self.pg.get().pixels
         greenTotal = 0
         redTotal = 0
         blueTotal = 0
 
-        #org = originalImage.loadPixels().pixels
+        org = originalImage.pixels
         totalFitness = 0
-       # if len(org) == len(self.pg.get().pixels):
-        #    for i in  self.pg.get(pixels):
-        #            greenTotal += green(org[i])-green(self.pg.get(pixels[i]))
+        if len(org) == len(chro):
+            for i in  range(len(chro)):
+                    greenTotal += green(org[i])-green(chro[i])
         
-        #            redTotal  += red(org[i])-red(self.pg.get(pixels[i]))
-        #            blueTotal += blue(org[i])-blue(self.pg.get(pixels[i]))
-        #            totalFitness += (redTotal * redTotal) + (blueTotal * blueTotal) + (greenTotal * greenTotal)            
-       # else:
-        #    print "lengths do not match. "
+                    redTotal  += red(org[i])-red(chro[i])
+                    blueTotal += blue(org[i])-blue(chro[i])
+                    totalFitness += (redTotal * redTotal) + (blueTotal * blueTotal) + (greenTotal * greenTotal)            
+        else:
+            print "lengths do not match. "
+        print totalFitness
         return totalFitness  
         
