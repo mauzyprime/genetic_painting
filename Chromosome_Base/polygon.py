@@ -7,14 +7,14 @@ class Polygon():
     def display(self, pGraphics): #Display this polygon to a PGraphics object, which acts similar to a self-contained canvas
         s = createShape() #Create a custom shape using the vertexCoords array
         s.beginShape()
-        s.fill(myColor)
+        s.fill(self.myColor)
         s.noStroke()
-        for c in vertexCoords:
+        for c in self.vertexCoords:
             s.vertex(c[0],c[1]) #Vertex at each coordinate
         s.endShape(CLOSE) #End the shape, join the first and last vertex, and fill in the shape
         
         pGraphics.beginDraw() #Draw the shape to the pGraphics object
-        pGraphics.fill(myColor) #Not sure if the shape or the fill needs to be set to the polygon's color, so I'm setting them both
+        pGraphics.fill(self.myColor) #Not sure if the shape or the fill needs to be set to the polygon's color, so I'm setting them both
         pGraphics.noStroke()
         pGraphics.shape(s)
         pGraphics.endDraw()
