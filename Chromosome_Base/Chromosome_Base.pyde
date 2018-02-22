@@ -58,6 +58,8 @@ def draw():
     image(originalImg, 25, 25)
     image(chromosome1.display(), 275, 25)
     image(chromosome1.display(), 525, 25)
+    #chromosome1.mutatePercentChange()
+    chromosome1.mutateOnePoly()
     
 class Chromosome:
     def __init__(self, numPolys,numVertices,h,w):
@@ -81,11 +83,55 @@ class Chromosome:
         for i in self.polygonsArr:
             self.pg = i.display(self.pg)
         return self.pg
-    def mutate(self):
-        for i in range(len(polygonsArr)): #For every polygon in the image
-            for i2 in range(len(polygonsArr[i].vertexCoords)):#for every vertex of a polygon
-                polygonsArr[i].vertexCoords[i2][1] +=10 #add 10 to the y value of the vertex
+    def mutatePercentChange(self):
+        chanceMutate = .15
+        for i in range(len(self.polygonsArr)): #For every polygon in the image
+            for i2 in range(len(self.polygonsArr[i].vertexCoords)):#for every vertex of a polygon
+                doesMutate = random(1)
+                if doesMutate < chanceMutate:
+                    self.polygonsArr[i].vertexCoords[i2][1] = random(self.pheight) #set y to random y
+                    self.polygonsArr[i].vertexCoords[i2][0] = random(self.pwidth) #set x to random x
+                    self.polygonsArr[i].myColor = color(random(255),random(255),random(255),random(255))
         return 0#placeholder for now.
+    def mutateOnePoly(self):
+        polygonChosen = int(random(len(self.polygonsArr)))
+        Pred = red(self.polygonsArr[polygonChosen].myColor)
+        Pblue = blue(self.polygonsArr[polygonChosen].myColor)
+        Pgreen = green(self.polygonsArr[polygonChosen].myColor)
+        Palpha = alpha(self.polygonsArr[polygonChosen].myColor)
+        Pred = Pred +random(-25,25)
+        Pblue = Pblue +random(-25,25)
+        Pgreen = Pgreen + random(-25,25)
+        Palpha = Palpha + random(-25,25)
+        if Pred > 255:
+            Pred = 255
+        if Pred < 0:
+            Pred = 0
+        if Pblue >255:
+            Pblue = 255
+        if Pblue < 0:
+            Pblue = 0
+        if Pgreen > 255:
+            Pgreen = 255
+        if Pgreen < 0:
+            Pgreen = 0
+        if Palpha > 255:
+            Palpha = 255
+        if Palpha < 0:
+            Palpha = 0
+        self.polygonsArr[polygonChosen].myColor = color(Pred,Pgreen,Pblue,Palpha)
+        for i2 in range(len(self.polygonsArr[polygonChosen].vertexCoords)):#for every vertex of a polygon
+            self.polygonsArr[polygonChosen].vertexCoords[i2][1] += random(-25,25) #set y to random y
+            self.polygonsArr[polygonChosen].vertexCoords[i2][0] += random(-25,25) #set x to random x
+            if self.polygonsArr[polygonChosen].vertexCoords[i2][1] > self.pheight:
+                self.polygonsArr[polygonChosen].vertexCoords[i2][1] = self.pheight
+            if self.polygonsArr[polygonChosen].vertexCoords[i2][1] < 0:
+                self.polygonsArr[polygonChosen].vertexCoords[i2][1] = 0
+            if self.polygonsArr[polygonChosen].vertexCoords[i2][0] > self.pwidth:
+                self.polygonsArr[polygonChosen].vertexCoords[i2][0] = self.pwidth
+            if self.polygonsArr[polygonChosen].vertexCoords[i2][0] < 0:
+                self.polygonsArr[polygonChosen].vertexCoords[i2][0] = 0
+                
     def fitness(self, originalImage):
         #Nolan Wuz Here
         greenTotal = 0
