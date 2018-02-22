@@ -12,6 +12,7 @@ originalImg = None
 
 
 def setup():
+    randomSeed(100)
     global chromosome1
     global originalImg
     originalImg = loadImage("monalisa.png")
@@ -42,6 +43,8 @@ def setup():
     #for i in pix:
         #i = color(127,127,127,127)
     #println(pix)
+    chromosome1.fitness(originalImg)
+    
 def draw():
     background(127)
     global chromosome1
@@ -72,16 +75,24 @@ class Chromosome:
         return self.pg
     def fitness(self, originalImage):
         #Nolan Wuz Here
+        #original image is a PImage; chromosome is a PGraphics
+        print len(originalImage.pixels) #this is 200 x 200. the mona lisa
+        loadPixels()
+        print len(pixels) #this then is the current canvas, 500 x 500. which we don't really care about. 
+        #print len(self.pg.get().pixels)
         greenTotal = 0
         redTotal = 0
         blueTotal = 0
-        org = originalImage.loadPixels().pixels
-        for i in  self.pg.get(pixels):
-            for j in self.pg.get(pixels[i]):
-                greenTotal += green(org[i][j])-green(pixels[i][j])
-                redTotal  += red(org[i][j])-red(pixels[i][j])
-                blueTotal += blue(org[i][j])-blue(pixels[i][j])
-            
-            
+        #org = originalImage.loadPixels().pixels
+        totalFitness = 0
+       # if len(org) == len(self.pg.get().pixels):
+        #    for i in  self.pg.get(pixels):
+        #            greenTotal += green(org[i])-green(self.pg.get(pixels[i]))
         
+        #            redTotal  += red(org[i])-red(self.pg.get(pixels[i]))
+        #            blueTotal += blue(org[i])-blue(self.pg.get(pixels[i]))
+        #            totalFitness += (redTotal * redTotal) + (blueTotal * blueTotal) + (greenTotal * greenTotal)            
+       # else:
+        #    print "lengths do not match. "
+        return totalFitness  
         
