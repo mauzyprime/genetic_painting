@@ -73,3 +73,8 @@ class Chromosome:
     def fitness(self, originalImage):
         #Nolan Wuz Here
         pass
+    def mutate(self):
+        for i in range(len(polygonsArr)): #For every polygon in the image
+            for i2 in range(len(polygonsArr[i].vertexCoords)):#for every vertex of a polygon
+                polygonsArr[i].vertexCoords[i2][1] +=10 #add 10 to the y value of the vertex
+        return 0#placeholder for now.
