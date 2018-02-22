@@ -15,7 +15,7 @@ def setup():
     global chromosome1
     global originalImg
     originalImg = loadImage("monalisa.png")
-    size(500,500)
+    size(1000,500)
     #print mrKVariable
     
     chromosome1 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
@@ -43,10 +43,21 @@ def setup():
         #i = color(127,127,127,127)
     #println(pix)
 def draw():
-    background(127)
+    global originalImg
     global chromosome1
-    #print(chromosome1)
-    image(chromosome1.display(), 0,0)
+    
+    background(255)
+    fill(0)
+    
+    #Write the text labels for the 3 images
+    text("Original Image", 25, 20)
+    text("Current Chromosome", 275, 20)
+    text("Stand-in Same Chromosome", 525, 20)
+    
+    #Draw the 3 images
+    image(originalImg, 25, 25)
+    image(chromosome1.display(), 275, 25)
+    image(chromosome1.display(), 525, 25)
     
 class Chromosome:
     def __init__(self, numPolys,numVertices,h,w):
@@ -65,16 +76,24 @@ class Chromosome:
         
     def display(self):
         self.pg.beginDraw()
-        self.pg.background(255)
+        self.pg.background(0)
         self.pg.endDraw()
         for i in self.polygonsArr:
             self.pg = i.display(self.pg)
         return self.pg
-    def fitness(self, originalImage):
-        #Nolan Wuz Here
-        pass
     def mutate(self):
         for i in range(len(polygonsArr)): #For every polygon in the image
             for i2 in range(len(polygonsArr[i].vertexCoords)):#for every vertex of a polygon
                 polygonsArr[i].vertexCoords[i2][1] +=10 #add 10 to the y value of the vertex
         return 0#placeholder for now.
+    def fitness(self, originalImage):
+        #Nolan Wuz Here
+        greenTotal = 0
+        redTotal = 0
+        blueTotal = 0
+        org = originalImage.loadPixels().pixels
+        for i in  self.pg.get(pixels):
+            for j in self.pg.get(pixels[i]):
+                greenTotal += green(org[i][j])-green(pixels[i][j])
+                redTotal  += red(org[i][j])-red(pixels[i][j])
+                blueTotal += blue(org[i][j])-blue(pixels[i][j])
