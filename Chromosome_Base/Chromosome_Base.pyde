@@ -15,7 +15,7 @@ def setup():
     global chromosome1
     global originalImg
     originalImg = loadImage("monalisa.png")
-    size(500,500)
+    size(1000,500)
     #print mrKVariable
     
     chromosome1 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
@@ -43,10 +43,21 @@ def setup():
         #i = color(127,127,127,127)
     #println(pix)
 def draw():
-    background(127)
+    global originalImg
     global chromosome1
-    #print(chromosome1)
-    image(chromosome1.display(), 0,0)
+    
+    background(255)
+    fill(0)
+    
+    #Write the text labels for the 3 images
+    text("Original Image", 25, 20)
+    text("Current Chromosome", 275, 20)
+    text("Stand-in Same Chromosome", 525, 20)
+    
+    #Draw the 3 images
+    image(originalImg, 25, 25)
+    image(chromosome1.display(), 275, 25)
+    image(chromosome1.display(), 525, 25)
     
 class Chromosome:
     def __init__(self, numPolys,numVertices,h,w):
@@ -65,7 +76,7 @@ class Chromosome:
         
     def display(self):
         self.pg.beginDraw()
-        self.pg.background(255)
+        self.pg.background(0)
         self.pg.endDraw()
         for i in self.polygonsArr:
             self.pg = i.display(self.pg)
