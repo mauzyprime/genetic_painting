@@ -72,7 +72,16 @@ class Chromosome:
         return self.pg
     def fitness(self, originalImage):
         #Nolan Wuz Here
+        greenTotal = 0
+        redTotal = 0
+        blueTotal = 0
+        org = originalImage.loadPixels().pixels
         for i in  self.pg.get(pixels):
+            for j in self.pg.get(pixels[i]):
+                greenTotal += green(org[i][j])-green(pixels[i][j])
+                redTotal  += red(org[i][j])-red(pixels[i][j])
+                blueTotal += blue(org[i][j])-blue(pixels[i][j])
+            
             
         
         
