@@ -12,6 +12,7 @@ originalImg = None
 
 
 def setup():
+    #randomSeed(100)
     global chromosome1
     global originalImg
     originalImg = loadImage("monalisa.png")
@@ -42,6 +43,14 @@ def setup():
     #for i in pix:
         #i = color(127,127,127,127)
     #println(pix)
+    #the craziness below is what we used to test the functionality of the fitness funciton
+    #chromosome1.display()
+    #chromosome1.pg.beginDraw()
+    #chromosome1.pg.endDraw()
+   # chromosome1.pg.save("chromosome.png")
+    #originalImg = loadImage("chromosome.png")
+    #chromosome1.fitness(originalImg)
+    
 def draw():
     global originalImg
     global chromosome1
@@ -93,6 +102,7 @@ class Chromosome:
                     self.polygonsArr[i].vertexCoords[i2][0] = random(self.pwidth) #set x to random x
                     self.polygonsArr[i].myColor = color(random(255),random(255),random(255),random(255))
         return 0#placeholder for now.
+
     def mutateOnePoly(self):
         polygonChosen = int(random(len(self.polygonsArr)))
         Pred = red(self.polygonsArr[polygonChosen].myColor)
@@ -131,15 +141,26 @@ class Chromosome:
                 self.polygonsArr[polygonChosen].vertexCoords[i2][0] = self.pwidth
             if self.polygonsArr[polygonChosen].vertexCoords[i2][0] < 0:
                 self.polygonsArr[polygonChosen].vertexCoords[i2][0] = 0
-                
     def fitness(self, originalImage):
         #Nolan Wuz Here
+        #original image is a PImage; chromosome is a PGraphics
+        #print len(originalImage.pixels) #this is 200 x 200. the mona lisa
+        self.display()
+       # self.pg.endDraw()
+        chro = self.pg.get().pixels
         greenTotal = 0
         redTotal = 0
         blueTotal = 0
-        org = originalImage.loadPixels().pixels
-        for i in  self.pg.get(pixels):
-            for j in self.pg.get(pixels[i]):
-                greenTotal += green(org[i][j])-green(pixels[i][j])
-                redTotal  += red(org[i][j])-red(pixels[i][j])
-                blueTotal += blue(org[i][j])-blue(pixels[i][j])
+        org = originalImage.pixels
+        totalFitness = 0
+        if len(org) == len(chro):
+            for i in  range(len(chro)):
+                    greenTotal += green(org[i])-green(chro[i])
+                    redTotal  += red(org[i])-red(chro[i])
+                    blueTotal += blue(org[i])-blue(chro[i])
+                    totalFitness += (redTotal * redTotal) + (blueTotal * blueTotal) + (greenTotal * greenTotal)            
+        else:
+            print "lengths do not match. "
+        print totalFitness
+        return totalFitness  
+        
