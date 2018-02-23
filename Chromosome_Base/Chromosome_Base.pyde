@@ -107,16 +107,16 @@ class Chromosome:
     def mutatePosition(self): #changes every vertex of every polygon
         for i in range(len(self.polygonsArr)):
             for k in range(len(self.polygonsArr[i].vertexCoords)):
-                blerg = random.choice([True,False])
-                glerg = random.choice([True, False])
-                if blerg:
+                blerg = random(2)
+                glerg = random(2)
+                if blerg == 0:
                     self.polygonsArr[i].vertexCoords[k][0] += 10 #changes x to something random
                 else:
-                    self.polygonsArr[i].vertexCoords[k][0] += -10
-                if glerg:
+                    self.polygonsArr[i].vertexCoords[k][0] -= 10
+                if glerg == 0:
                     self.polygonsArr[i].vertexCoords[k][1] += 10 #also changes y
                 else:
-                    self.polygonsArr[i].vertexCoords[k][1] += -10 #also changes y
+                    self.polygonsArr[i].vertexCoords[k][1] -= 10 #also changes y
 
     def mutateOnePoly(self):
         polygonChosen = int(random(len(self.polygonsArr)))
