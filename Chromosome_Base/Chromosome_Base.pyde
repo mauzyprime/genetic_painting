@@ -1,5 +1,6 @@
 from polygon import Polygon
 
+
 mrKVariable = 5
 secondVariable = 10
 willHolzmanHomeworkDone = 1
@@ -68,7 +69,7 @@ def draw():
     image(chromosome1.display(), 275, 25)
     image(chromosome1.display(), 525, 25)
     #chromosome1.mutatePercentChange()
-    chromosome1.mutateOnePoly()
+    chromosome1.mutatePosition()
     
 class Chromosome:
     def __init__(self, numPolys,numVertices,h,w):
@@ -102,6 +103,20 @@ class Chromosome:
                     self.polygonsArr[i].vertexCoords[i2][0] = random(self.pwidth) #set x to random x
                     self.polygonsArr[i].myColor = color(random(255),random(255),random(255),random(255))
         return 0#placeholder for now.
+    
+    def mutatePosition(self): #changes every vertex of every polygon
+        for i in range(len(self.polygonsArr)):
+            for k in range(len(self.polygonsArr[i].vertexCoords)):
+                blerg = random.choice([True,False])
+                glerg = random.choice([True, False])
+                if blerg:
+                    self.polygonsArr[i].vertexCoords[k][0] += 10 #changes x to something random
+                else:
+                    self.polygonsArr[i].vertexCoords[k][0] += -10
+                if glerg:
+                    self.polygonsArr[i].vertexCoords[k][1] += 10 #also changes y
+                else:
+                    self.polygonsArr[i].vertexCoords[k][1] += -10 #also changes y
 
     def mutateOnePoly(self):
         polygonChosen = int(random(len(self.polygonsArr)))
@@ -144,21 +159,21 @@ class Chromosome:
     def fitness(self, originalImage):
         #Nolan Wuz Here
         #original image is a PImage; chromosome is a PGraphics
-        #print len(originalImage.pixels) #this is 200 x 200. the mona lisa
+        #pixel is a one dimensional array; dont panic
         self.display()
-       # self.pg.endDraw()
-        chro = self.pg.get().pixels
+        chro = self.pg.get().pixels #gets access to the chromosome's pixel array
         greenTotal = 0
         redTotal = 0
         blueTotal = 0
-        org = originalImage.pixels
+        org = originalImage.pixels #.pixels is an accessible variable inside processing. 
         totalFitness = 0
-        if len(org) == len(chro):
+        if len(org) == len(chro): #a check in case something goes wrong between the two images
             for i in  range(len(chro)):
-                    greenTotal += green(org[i])-green(chro[i])
-                    redTotal  += red(org[i])-red(chro[i])
-                    blueTotal += blue(org[i])-blue(chro[i])
-                    totalFitness += (redTotal * redTotal) + (blueTotal * blueTotal) + (greenTotal * greenTotal)            
+                greenTotal += green(org[i])-green(chro[i])
+                redTotal  += red(org[i])-red(chro[i])
+                blueTotal += blue(org[i])-blue(chro[i])
+                #finds delta
+                totalFitness += (redTotal * redTotal) + (blueTotal * blueTotal) + (greenTotal * greenTotal)            
         else:
             print "lengths do not match. "
         print totalFitness
