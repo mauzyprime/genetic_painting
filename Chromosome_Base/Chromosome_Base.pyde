@@ -1,4 +1,5 @@
 from polygon import Polygon
+import copy
 
 mrKVariable = 5
 secondVariable = 10
@@ -12,6 +13,7 @@ originalImg = None
 
 
 def setup():
+    frameRate(0.5)
     #randomSeed(100)
     global chromosome1
     global originalImg
@@ -66,9 +68,14 @@ def draw():
     #Draw the 3 images
     image(originalImg, 25, 25)
     image(chromosome1.display(), 275, 25)
-    image(chromosome1.display(), 525, 25)
+    chromosome2 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
+    chromosome2.polygonsArr = chromosome1.polygonsArr
+    chromosome2.mutatePercentChange()
+    image(chromosome2.display(), 525, 25)
+    if chromosome1.fitness(originalImg) > chromosome2.fitness(originalImg):
+        chromosome1
     #chromosome1.mutatePercentChange()
-    chromosome1.mutateOnePoly()
+    #chromosome1.mutateOnePoly()
     
 class Chromosome:
     def __init__(self, numPolys,numVertices,h,w):
@@ -84,7 +91,6 @@ class Chromosome:
         self.pheight = h#height
         self.pwidth = w#width
         self.pg = createGraphics(w,h)
-        
     def display(self):
         self.pg.beginDraw()
         self.pg.background(0)
@@ -102,7 +108,9 @@ class Chromosome:
                     self.polygonsArr[i].vertexCoords[i2][0] = random(self.pwidth) #set x to random x
                     self.polygonsArr[i].myColor = color(random(255),random(255),random(255),random(255))
         return 0#placeholder for now.
-
+    def chromosomeDuplicate(self):
+        pass
+        #chromosome2 = 
     def mutateOnePoly(self):
         polygonChosen = int(random(len(self.polygonsArr)))
         Pred = red(self.polygonsArr[polygonChosen].myColor)
