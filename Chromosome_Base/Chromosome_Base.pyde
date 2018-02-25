@@ -123,6 +123,39 @@ class Chromosome:
                     self.polygonsArr[i].vertexCoords[k][1] += 10 #also changes y
                 else:
                     self.polygonsArr[i].vertexCoords[k][1] -= 10 #also changes y
+                    
+    def megaMutate(self):
+        #random number of polygons within the set
+        #change position, color, or both, to a new random number (within a range)
+        numberOfPolys = random(len(self.polygonsArr))
+        for i in range(numberOfPolys):
+            option = random(1)
+            #in this current setup it is possible to mutate the same polygon twice oops
+            chro = self.polygonsArr[random(len(self.polygonsArr))]
+            #the below numbers can be fine-tuned to get a better result. 
+            if option < .25:
+                redthing = red(chro.myColor) + random(-30,30)
+                bluething = blue(chro.myColor) + random(-30,30)
+                greenthing = green(chro.myColor) + random(-30,30)
+                alphathing = alpha(chro.myColor) + random(-30,30)
+                chro.myColor = color(redthing,bluething,greenthing,alphathing)
+                # only change color
+            elif (option < .5):
+                # only change position
+                 for k in range(len(chro.vertexCoords)):
+                    chro.vertexCoords[k][0] += random(-20,20) #changes x to something random
+                    chro.vertexCoords[k][1] += random(-20,20) #also changes y
+            else:
+                #change both
+                redthing = red(chro.myColor) + random(-30,30)
+                bluething = blue(chro.myColor) + random(-30,30)
+                greenthing = green(chro.myColor) + random(-30,30)
+                alphathing = alpha(chro.myColor) + random(-30,30)
+                chro.myColor = color(redthing,bluething,greenthing,alphathing)
+                for k in range(len(chro.vertexCoords)):
+                    chro.vertexCoords[k][0] += random(-20,20) #changes x to something random
+                    chro.vertexCoords[k][1] += random(-20,20) #also changes y
+    
     def mutateOnePoly(self):
         polygonChosen = int(random(len(self.polygonsArr)))
         Pred = red(self.polygonsArr[polygonChosen].myColor)
