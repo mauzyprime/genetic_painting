@@ -19,7 +19,7 @@ def setup():
     #randomSeed(100)
     global chromosome1
     global originalImg
-    originalImg = loadImage("monalisa.png")
+    originalImg = loadImage("firefox.png")
     size(1000,500)
     #print mrKVariable
     
@@ -73,7 +73,7 @@ def draw():
     chromosome2 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
     chromosome2.polygonsArr = deepcopy(chromosome1.polygonsArr)
     #chromosome2.mutatePercentChange()
-    chromosome2.megaMutate()
+    chromosome2.mediumMutate()
     image(chromosome2.display(), 525, 25)
     fitness1 = chromosome1.fitness(originalImg)
     fitness2 = chromosome2.fitness(originalImg)
@@ -94,7 +94,8 @@ class Chromosome:
             verticesList = []
             for i in range(numVertices):
                 verticesList.append([random(w),random(h)])
-            nPolygon = Polygon(numVertices, color(random(255),random(255),random(255),random(255)),verticesList)
+            #nPolygon = Polygon(numVertices, color(random(255),random(255),random(255),random(255)),verticesList)
+            nPolygon = Polygon(numVertices, color(255,255,255,255),verticesList)
             self.polygonsArr.append(nPolygon)
         self.numVertices = numVertices
         self.numPolygons = numPolys
@@ -108,6 +109,26 @@ class Chromosome:
         for i in self.polygonsArr:
             self.pg = i.display(self.pg)
         return self.pg
+    
+    def mediumMutate(self):
+        poly = self.polygonsArr[int(random(len(self.polygonsArr)))]
+        option = random(1)
+        redthing = int(random(0,255))
+        bluething = int(random(0,255))
+        greenthing = int(random(0,255))
+        alphathing = int(random(0,255))
+        if option < .25:
+            poly.myColor = color(redthing,blue(poly.myColor),green(poly.myColor),alpha(poly.myColor))
+        elif option < .5:
+            poly.myColor = color(red(poly.myColor),bluething,green(poly.myColor),alpha(poly.myColor))
+        elif option < .75:
+            poly.myColor = color(red(poly.myColor),blue(poly.myColor),greenthing,alpha(poly.myColor))
+        else:
+            poly.myColor = color(red(poly.myColor),blue(poly.myColor),green(poly.myColor),alphathing)
+        vertex1 = int(random(len(poly.vertexCoords)))
+        poly.vertexCoords[vertex1][0] = int(random(0,200))
+        poly.vertexCoords[vertex1][1] = int(random(0,200))
+        
     def mutatePercentChange(self):
         chanceMutate = .15
         for i in range(len(self.polygonsArr)): #For every polygon in the image
