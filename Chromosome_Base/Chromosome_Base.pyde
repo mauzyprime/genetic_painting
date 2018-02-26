@@ -1,5 +1,5 @@
 from polygon import Polygon
-import copy
+from copy import deepcopy
 
 
 mrKVariable = 5
@@ -14,7 +14,8 @@ originalImg = None
 
 
 def setup():
-    frameRate(0.5)
+    
+    #frameRate(0.5)
     #randomSeed(100)
     global chromosome1
     global originalImg
@@ -64,17 +65,23 @@ def draw():
     #Write the text labels for the 3 images
     text("Original Image", 25, 20)
     text("Current Chromosome", 275, 20)
-    text("Stand-in Same Chromosome", 525, 20)
+    text("Maybe Chromosome", 525, 20)
     
     #Draw the 3 images
     image(originalImg, 25, 25)
     image(chromosome1.display(), 275, 25)
     chromosome2 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
-    chromosome2.polygonsArr = chromosome1.polygonsArr
+    chromosome2.polygonsArr = deepcopy(chromosome1.polygonsArr)
     chromosome2.mutatePercentChange()
     image(chromosome2.display(), 525, 25)
-    if chromosome1.fitness(originalImg) > chromosome2.fitness(originalImg):
-        chromosome1
+    fitness1 = chromosome1.fitness(originalImg)
+    fitness2 = chromosome2.fitness(originalImg)
+    
+    text(fitness1, 275, 250)
+    text(fitness2, 525, 250)
+    
+    if fitness1 > fitness2:
+        chromosome1.polygonsArr = deepcopy(chromosome2.polygonsArr)
     #chromosome1.mutatePercentChange()
     #chromosome1.mutateOnePoly()
     #chromosome1.mutatePosition()
@@ -162,10 +169,10 @@ class Chromosome:
         Pblue = blue(self.polygonsArr[polygonChosen].myColor)
         Pgreen = green(self.polygonsArr[polygonChosen].myColor)
         Palpha = alpha(self.polygonsArr[polygonChosen].myColor)
-        Pred = Pred +random(-25,25)
-        Pblue = Pblue +random(-25,25)
-        Pgreen = Pgreen + random(-25,25)
-        Palpha = Palpha + random(-25,25)
+        Pred = Pred +random(-120,120)
+        Pblue = Pblue +random(-120,120)
+        Pgreen = Pgreen + random(-120,120)
+        Palpha = Palpha + random(-120,120)
         if Pred > 255:
             Pred = 255
         if Pred < 0:
@@ -184,8 +191,8 @@ class Chromosome:
             Palpha = 0
         self.polygonsArr[polygonChosen].myColor = color(Pred,Pgreen,Pblue,Palpha)
         for i2 in range(len(self.polygonsArr[polygonChosen].vertexCoords)):#for every vertex of a polygon
-            self.polygonsArr[polygonChosen].vertexCoords[i2][1] += random(-25,25) #set y to random y
-            self.polygonsArr[polygonChosen].vertexCoords[i2][0] += random(-25,25) #set x to random x
+            self.polygonsArr[polygonChosen].vertexCoords[i2][1] += random(-100,100) #set y to random y
+            self.polygonsArr[polygonChosen].vertexCoords[i2][0] += random(-100,100) #set x to random x
             if self.polygonsArr[polygonChosen].vertexCoords[i2][1] > self.pheight:
                 self.polygonsArr[polygonChosen].vertexCoords[i2][1] = self.pheight
             if self.polygonsArr[polygonChosen].vertexCoords[i2][1] < 0:
@@ -207,11 +214,11 @@ class Chromosome:
         totalFitness = 0
         if len(org) == len(chro): #a check in case something goes wrong between the two images
             for i in  range(len(chro)):
-                greenTotal += green(org[i])-green(chro[i])
-                redTotal  += red(org[i])-red(chro[i])
-                blueTotal += blue(org[i])-blue(chro[i])
+                greenTotal += abs(green(org[i])-green(chro[i]))
+                redTotal  += abs(red(org[i])-red(chro[i]))
+                blueTotal += abs(blue(org[i])-blue(chro[i]))
                 #finds delta
-                totalFitness += (redTotal * redTotal) + (blueTotal * blueTotal) + (greenTotal * greenTotal)            
+                totalFitness += sqrt((redTotal * redTotal) + (blueTotal * blueTotal) + (greenTotal * greenTotal))            
         else:
             print "lengths do not match. "
         print totalFitness
