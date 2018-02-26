@@ -72,7 +72,8 @@ def draw():
     image(chromosome1.display(), 275, 25)
     chromosome2 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
     chromosome2.polygonsArr = deepcopy(chromosome1.polygonsArr)
-    chromosome2.mutatePercentChange()
+    #chromosome2.mutatePercentChange()
+    chromosome2.megaMutate()
     image(chromosome2.display(), 525, 25)
     fitness1 = chromosome1.fitness(originalImg)
     fitness2 = chromosome2.fitness(originalImg)
@@ -135,10 +136,10 @@ class Chromosome:
         #random number of polygons within the set
         #change position, color, or both, to a new random number (within a range)
         numberOfPolys = random(len(self.polygonsArr))
-        for i in range(numberOfPolys):
+        for i in range(int(numberOfPolys)):
             option = random(1)
             #in this current setup it is possible to mutate the same polygon twice oops
-            chro = self.polygonsArr[random(len(self.polygonsArr))]
+            chro = self.polygonsArr[int(random(len(self.polygonsArr)))]
             #the below numbers can be fine-tuned to get a better result. 
             if option < .25:
                 redthing = red(chro.myColor) + random(-30,30)
