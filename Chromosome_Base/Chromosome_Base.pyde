@@ -8,8 +8,8 @@ willHolzmanHomeworkDone = 1
 nolanVariable = sqrt(-64)
 chromosome1 = None
 
-numPolys = 50
-numVertices = 4
+numPolys = 66
+numVertices = 5
 originalImg = None
 
 
@@ -19,7 +19,8 @@ def setup():
     #randomSeed(100)
     global chromosome1
     global originalImg
-    originalImg = loadImage("monalisa.png")
+    #originalImg = loadImage("monalisa.png")
+    originalImg = loadImage("riverdale.png")
     size(1000,500)
     #print mrKVariable
     
@@ -73,7 +74,8 @@ def draw():
     chromosome2 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
     chromosome2.polygonsArr = deepcopy(chromosome1.polygonsArr)
     #chromosome2.mutatePercentChange()
-    chromosome2.megaMutate()
+    #chromosome2.megaMutate()
+    chromosome2.mutateOnePoly()
     image(chromosome2.display(), 525, 25)
     fitness1 = chromosome1.fitness(originalImg)
     fitness2 = chromosome2.fitness(originalImg)
