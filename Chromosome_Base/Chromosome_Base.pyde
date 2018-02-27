@@ -8,6 +8,8 @@ willHolzmanHomeworkDone = 1
 nolanVariable = sqrt(-64)
 chromosome1 = None
 
+initPop = 10
+populationArray = []
 numPolys = 66
 numVertices = 5
 originalImg = None
@@ -30,9 +32,11 @@ def setup():
 
     size(1000,500)
     #print mrKVariable
-    
     chromosome1 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
-    
+    for i in range(initPop):
+        chromosome2 = None
+        chromosome2 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
+        populationArray.append(chromosome2)
 def draw():
     global originalImg
     global chromosome1
@@ -83,6 +87,15 @@ def draw():
     text("Improvements: "+str(numImprovements), 775, 50)
     pctImprovement = 100*(numImprovements/numMutations)
     text("Percent Improvement: "+str(pctImprovement), 775, 75)
+
+def bestSelection(populationArray):
+    bestArray = []
+    numberKept = 3
+    for i in populationArray:
+        bestArray.append(i.fitness(originalImg))
+    bestArray.sort()
+    return bestArray[:numberKept]
+
 
 class Chromosome:
     def __init__(self, numPolys,numVertices,h,w):
