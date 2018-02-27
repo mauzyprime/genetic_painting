@@ -12,81 +12,74 @@ numPolys = 50
 numVertices = 4
 originalImg = None
 
+numImprovements = 0.0
+numMutations = 0.0
+
 
 def setup():
     
     #frameRate(0.5)
+    frameRate(100000000)
     #randomSeed(100)
     global chromosome1
     global originalImg
-    originalImg = loadImage("firefox.png")
+    #originalImg = loadImage("monalisa.png")
+    originalImg = loadImage("chrome.png")
+    #originalImg = loadImage("xp_background.png")
     size(1000,500)
     #print mrKVariable
     
     chromosome1 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
-
-    # pg = createGraphics(10,10)
-    # pg.beginDraw()
-    # pg.background(12,123,234)
-    # pg.endDraw()
-    
-    # img = createImage(10,10,RGB)
-    # pg.loadPixels()
-    # println(img)
-    # println(img.pixels)
-    # println(pg)
-    # println(pg.get())
-    #println(pg.get().pixels)
-    #for i in pg.get().pixels:
-        #print(red(i))
-        #print(blue(i))
-        #print(green(i))
-        #println("")
-    #image(img,0,0)
-    #pix = pg.get().pixels
-    #for i in pix:
-        #i = color(127,127,127,127)
-    #println(pix)
-    #the craziness below is what we used to test the functionality of the fitness funciton
-    #chromosome1.display()
-    #chromosome1.pg.beginDraw()
-    #chromosome1.pg.endDraw()
-   # chromosome1.pg.save("chromosome.png")
-    #originalImg = loadImage("chromosome.png")
-    #chromosome1.fitness(originalImg)
     
 def draw():
     global originalImg
     global chromosome1
+    global numImprovements
+    global numMutations
     
-    background(255)
+    background(200)
     fill(0)
     
     #Write the text labels for the 3 images
     text("Original Image", 25, 20)
     text("Current Chromosome", 275, 20)
-    text("Maybe Chromosome", 525, 20)
+    text("Test Chromosome", 525, 20)
     
     #Draw the 3 images
     image(originalImg, 25, 25)
-    image(chromosome1.display(), 275, 25)
+    #image(chromosome1.display(), 275, 25)
+    image(chromosome1.pg, 275, 25)
     chromosome2 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
     chromosome2.polygonsArr = deepcopy(chromosome1.polygonsArr)
-    #chromosome2.mutatePercentChange()
+    
     chromosome2.mediumMutate()
-    image(chromosome2.display(), 525, 25)
+    #chromosome2.mutatePercentChange()
+    #chromosome2.megaMutate()
+    #chromosome2.mutateOnePoly()
+    
+    chromosome2.redrawPG()
+    
+    image(chromosome2.pg, 525, 25)
     fitness1 = chromosome1.fitness(originalImg)
     fitness2 = chromosome2.fitness(originalImg)
     
-    text(fitness1, 275, 250)
-    text(fitness2, 525, 250)
+    text("Fitness: "+str(int(fitness1)), 275, 250)
+    text("Fitness: "+str(int(fitness2)), 525, 250)
+    text("Digits: "+str(len(str(int(fitness1)))), 275, 275)
+    text("Digits: "+str(len(str(int(fitness2)))), 525, 275)
+    
+    numMutations = numMutations+1
     
     if fitness1 > fitness2:
         chromosome1.polygonsArr = deepcopy(chromosome2.polygonsArr)
-    #chromosome1.mutatePercentChange()
-    #chromosome1.mutateOnePoly()
-    #chromosome1.mutatePosition()
-    
+        chromosome1.redrawPG()
+        numImprovements = numImprovements+1
+        
+    text("Mutations: "+str(numMutations), 775, 25)
+    text("Improvements: "+str(numImprovements), 775, 50)
+    pctImprovement = 100*(numImprovements/numMutations)
+    text("Percent Improvement: "+str(pctImprovement), 775, 75)
+
 class Chromosome:
     def __init__(self, numPolys,numVertices,h,w):
         self.polygonsArr = []
@@ -95,16 +88,17 @@ class Chromosome:
             for i in range(numVertices):
                 verticesList.append([random(w),random(h)])
             #nPolygon = Polygon(numVertices, color(random(255),random(255),random(255),random(255)),verticesList)
-            nPolygon = Polygon(numVertices, color(255,255,255,255),verticesList)
+            nPolygon = Polygon(numVertices, color(0,0,0,1),verticesList)
             self.polygonsArr.append(nPolygon)
         self.numVertices = numVertices
         self.numPolygons = numPolys
         self.pheight = h#height
         self.pwidth = w#width
         self.pg = createGraphics(w,h)
-    def display(self):
+        self.redrawPG()
+    def redrawPG(self):
         self.pg.beginDraw()
-        self.pg.background(0)
+        self.pg.background(255)
         self.pg.endDraw()
         for i in self.polygonsArr:
             self.pg = i.display(self.pg)
@@ -227,7 +221,7 @@ class Chromosome:
         #Nolan Wuz Here
         #original image is a PImage; chromosome is a PGraphics
         #pixel is a one dimensional array; dont panic
-        self.display()
+        #self.display()
         chro = self.pg.get().pixels #gets access to the chromosome's pixel array
         greenTotal = 0
         redTotal = 0
