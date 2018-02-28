@@ -15,6 +15,11 @@ originalImg = None
 numImprovements = 0.0
 numMutations = 0.0
 
+adata = createWriter("run.csv")
+adata.print("currently working on riverdale.png\n")
+adata.flush()
+adata.close()
+
 
 def setup():
     
@@ -25,13 +30,14 @@ def setup():
     global originalImg
     #originalImg = loadImage("monalisa.png")
 
-    originalImg = loadImage("chrome.png")
+    originalImg = loadImage("riverdale.png")
     #originalImg = loadImage("xp_background.png")
 
     size(1000,500)
     #print mrKVariable
     
     chromosome1 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
+    
     
 def draw():
     global originalImg
@@ -46,6 +52,7 @@ def draw():
     text("Original Image", 25, 20)
     text("Current Chromosome", 275, 20)
     text("Test Chromosome", 525, 20)
+    
     
     #Draw the 3 images
     image(originalImg, 25, 25)
@@ -78,11 +85,13 @@ def draw():
         chromosome1.polygonsArr = deepcopy(chromosome2.polygonsArr)
         chromosome1.redrawPG()
         numImprovements = numImprovements+1
+        #saveStrings("results.txt",(str(fitness1) + "," + str(fitness2) + "," + str(fitness1-fitness2)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations))))
         
     text("Mutations: "+str(numMutations), 775, 25)
     text("Improvements: "+str(numImprovements), 775, 50)
     pctImprovement = 100*(numImprovements/numMutations)
     text("Percent Improvement: "+str(pctImprovement), 775, 75)
+
 
 class Chromosome:
     def __init__(self, numPolys,numVertices,h,w):
