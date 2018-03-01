@@ -17,7 +17,7 @@ originalImg = None
 numImprovements = 0.0
 numMutations = 0.0
 
-adata = createWriter("run.csv")
+adata = createWriter("run.txt")
 adata.print("currently working on riverdale.png\n")
 adata.flush()
 adata.close()
