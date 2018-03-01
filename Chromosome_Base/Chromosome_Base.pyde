@@ -10,7 +10,7 @@ chromosome1 = None
 
 initPop = 10
 populationArray = []
-numPolys = 66
+numPolys = 50
 numVertices = 5
 originalImg = None
 
@@ -35,7 +35,7 @@ def setup():
     originalImg = loadImage("riverdale.png")
     #originalImg = loadImage("xp_background.png")
 
-    size(1000,500)
+    size(2200,700)
     #print mrKVariable
     chromosome1 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
 
@@ -49,40 +49,46 @@ def draw():
     global chromosome1
     global numImprovements
     global numMutations
+    global populationArray
     
     background(200)
     fill(0)
     
     #Write the text labels for the 3 images
     text("Original Image", 25, 20)
-    text("Current Chromosome", 275, 20)
-    text("Test Chromosome", 525, 20)
+    #text("Current Chromosome", 275, 20)
+    #text("Test Chromosome", 525, 20)
     
     
     #Draw the 3 images
     image(originalImg, 25, 25)
-    #image(chromosome1.display(), 275, 25)
-    image(chromosome1.pg, 275, 25)
     chromosome2 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
     chromosome2.polygonsArr = deepcopy(chromosome1.polygonsArr)
     
     chromosome2.mediumMutate()
     #chromosome2.mutatePercentChange()
     #chromosome2.megaMutate()
-
     #chromosome2.mutateOnePoly()
-    
     chromosome2.redrawPG()
     
-    image(chromosome2.pg, 525, 25)
+    #image(chromosome2.pg, 525, 25)
 
     fitness1 = chromosome1.fitness(originalImg)
     fitness2 = chromosome2.fitness(originalImg)
     
-    text("Fitness: "+str(int(fitness1)), 275, 250)
-    text("Fitness: "+str(int(fitness2)), 525, 250)
-    text("Digits: "+str(len(str(int(fitness1)))), 275, 275)
-    text("Digits: "+str(len(str(int(fitness2)))), 525, 275)
+    #drawChromosome(250, chromosome1, fitness1, "Best Chromosome")
+    #drawChromosome(500, chromosome2, fitness2)
+    position = 0
+    for c in populationArray:
+        c.mutateOnePoly()
+        c.redrawPG()
+        drawChromosome(position, c, c.fitness(originalImg))
+        position = position + 210
+    
+    #text("Fitness: "+str(int(fitness1)), 275, 250)
+    #text("Fitness: "+str(int(fitness2)), 525, 250)
+    #text("Digits: "+str(len(str(int(fitness1)))), 275, 275)
+    #text("Digits: "+str(len(str(int(fitness2)))), 525, 275)
     
     numMutations = numMutations+1
     
@@ -98,6 +104,20 @@ def draw():
     text("Percent Improvement: "+str(pctImprovement), 775, 75)
 
 
+def chooseOnePolyCrossover(parent1, parent2):
+    global numPolys
+    global numVertices
+    global originalImg
+    newPolysArr = []
+    for i = numPolys/2:
+        newPolysArr.append(parent1.polygonsArr[random(numPolys)])
+        newPolysArr.append(parent2.polygonsArr[random(numPolys)])
+    newChro = Chromosome(numPolys, numVertices, originalImg.height, originalImage.width)
+    newChro.polygonsArr = newPolysArr
+    newChro.redrawPG()
+    return newChro
+        
+
 def bestSelection(populationArray):
     bestArray = []
     numberKept = 3
@@ -105,6 +125,12 @@ def bestSelection(populationArray):
         bestArray.append(i.fitness(originalImg))
     bestArray.sort()
     return bestArray[:numberKept]
+
+def drawChromosome(position, chromosome, fitness, topText=""):
+    text(topText, position, 320)
+    image(chromosome.pg, position, 325)
+    text("Fitness: "+str(int(fitness)), position, 550)
+    text("Digits: "+str(len(str(int(fitness)))), position, 575)
 
 
 
@@ -122,6 +148,7 @@ class Chromosome:
         self.numPolygons = numPolys
         self.pheight = h#height
         self.pwidth = w#width
+        self.myFitness = 0
         self.pg = createGraphics(w,h)
         self.redrawPG()
     def redrawPG(self):
@@ -266,5 +293,6 @@ class Chromosome:
         else:
             print "lengths do not match. "
         print totalFitness
+        self.myFitness = totalFitness
         return totalFitness  
         
