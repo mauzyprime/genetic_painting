@@ -19,6 +19,7 @@ originalImg = None
 numImprovements = 0.0
 numMutations = 0.0
 
+
 #adata = createWriter("run.txt")
 #adata.print("currently working on riverdale.png\n")
 #adata.flush()
@@ -71,7 +72,7 @@ def draw():
     text("Original Image", 25, 20)
     #text("Current Chromosome", 275, 20)
     #text("Test Chromosome", 525, 20)
-    
+    rect(
     
     #Draw the 3 images
     image(originalImg, 25, 25)
