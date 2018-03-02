@@ -7,9 +7,10 @@ mrKVariable = 5
 secondVariable = 10
 willHolzmanHomeworkDone = 1
 nolanVariable = sqrt(-64)
-chromosome1 = None
+bestChromosome = None
 
 initPop = 10
+numChildrenPerGeneration = 4
 populationArray = []
 numPolys = 250
 numVertices = 3
@@ -29,31 +30,30 @@ def setup():
     #frameRate(0.5)
     frameRate(100000000)
     #randomSeed(100)
+    
     global chromosome1
     global originalImg
-<<<<<<< HEAD
-    originalImg = loadImage("monalisa.png")
-    #originalImg = loadImage("chrome.png")
-=======
-    #originalImg = loadImage("monalisa.png")
+    
     with open('data.csv','wb') as csvfile:
         writer = csv.writer(csvfile,delimiter=',')
+    #originalImg = loadImage("monalisa.png")
+    #originalImg = loadImage("chrome.png")
     originalImg = loadImage("riverdale.png")
->>>>>>> 97a26783d086d443f86c5f02d35c85c6cd87b375
     #originalImg = loadImage("xp_background.png")
 
     size(2200,700)
     #print mrKVariable
-    chromosome1 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
+    bestChromosome = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
+    bestChromosome.redrawPG()
 
     for i in range(initPop):
-        chromosome2 = None
-        chromosome2 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
-        populationArray.append(chromosome2)
+        #chromosome = None
+        chromosome = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
+        populationArray.append(chromosome)
 
 def draw():
     global originalImg
-    global chromosome1
+    global bestChromosome
     global numImprovements
     global numMutations
     global populationArray
@@ -69,28 +69,28 @@ def draw():
     
     #Draw the 3 images
     image(originalImg, 25, 25)
-    chromosome2 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
-    chromosome2.polygonsArr = deepcopy(chromosome1.polygonsArr)
+    #chromosome2 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
+    #chromosome2.polygonsArr = deepcopy(chromosome1.polygonsArr)
     
     #chromosome2.mediumMutate()
     #chromosome2.mutatePercentChange()
     #chromosome2.megaMutate()
-    chromosome2.mutateOnePoly()
-    chromosome2.redrawPG()
+    #chromosome2.mutateOnePoly()
+    #chromosome2.redrawPG()
     
     #image(chromosome2.pg, 525, 25)
 
-    fitness1 = chromosome1.fitness(originalImg)
-    fitness2 = chromosome2.fitness(originalImg)
+    bestFitness = bestChromosome.fitness(originalImg)
+    #fitness2 = chromosome2.fitness(originalImg)
     
-    drawChromosome(250, chromosome1, fitness1, "Best Chromosome")
-    drawChromosome(500, chromosome2, fitness2)
+    drawChromosome(250, bestChromosome, fitness, "Best Chromosome")
+    #drawChromosome(500, chromosome2, fitness2)
     position = 0
-    #for c in populationArray:
-        #c.mutateOnePoly()
-        #c.redrawPG()
-        #drawChromosome(position, c, c.fitness(originalImg))
-        #position = position + 210
+    for c in populationArray:
+        c.mutateOnePoly()
+        c.redrawPG()
+        drawChromosome(position, c, c.fitness(originalImg))
+        position = position + 210
     
     #text("Fitness: "+str(int(fitness1)), 275, 250)
     #text("Fitness: "+str(int(fitness2)), 525, 250)
@@ -103,7 +103,7 @@ def draw():
         chromosome1.polygonsArr = deepcopy(chromosome2.polygonsArr)
         chromosome1.redrawPG()
         numImprovements = numImprovements+1
-        writer.writerow(str(fitness1) + "," + str(fitness2) + "," + str(fitness1-fitness2)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations)))
+        #writer.writerow(str(fitness1) + "," + str(fitness2) + "," + str(fitness1-fitness2)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations)))
         
     text("Mutations: "+str(numMutations), 775, 25)
     text("Improvements: "+str(numImprovements), 775, 50)
@@ -158,6 +158,14 @@ class Chromosome:
         self.myFitness = 0
         self.pg = createGraphics(w,h)
         self.redrawPG()
+        
+    def __cmp__(self, other): #This is a manually defined function that is used by the built-in sorted() function
+        if self.myFitness > other.myFitness:
+            return 1
+        elif self.myFitness < other.myFitness:
+            return -1
+        else:
+            return 0
         
     def redrawPG(self):
         self.pg.beginDraw()
