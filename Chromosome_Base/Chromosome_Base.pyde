@@ -1,5 +1,6 @@
 from polygon import Polygon
 from copy import deepcopy
+import csv
 
 
 mrKVariable = 5
@@ -17,6 +18,11 @@ originalImg = None
 numImprovements = 0.0
 numMutations = 0.0
 
+adata = createWriter("run.txt")
+adata.print("currently working on riverdale.png\n")
+adata.flush()
+adata.close()
+
 
 def setup():
     
@@ -25,17 +31,26 @@ def setup():
     #randomSeed(100)
     global chromosome1
     global originalImg
+<<<<<<< HEAD
     originalImg = loadImage("monalisa.png")
     #originalImg = loadImage("chrome.png")
+=======
+    #originalImg = loadImage("monalisa.png")
+    with open('data.csv','wb') as csvfile:
+        writer = csv.writer(csvfile,delimiter=',')
+    originalImg = loadImage("riverdale.png")
+>>>>>>> 97a26783d086d443f86c5f02d35c85c6cd87b375
     #originalImg = loadImage("xp_background.png")
 
     size(2200,700)
     #print mrKVariable
     chromosome1 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
+
     for i in range(initPop):
         chromosome2 = None
         chromosome2 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
         populationArray.append(chromosome2)
+
 def draw():
     global originalImg
     global chromosome1
@@ -50,6 +65,7 @@ def draw():
     text("Original Image", 25, 20)
     #text("Current Chromosome", 275, 20)
     #text("Test Chromosome", 525, 20)
+    
     
     #Draw the 3 images
     image(originalImg, 25, 25)
@@ -87,11 +103,13 @@ def draw():
         chromosome1.polygonsArr = deepcopy(chromosome2.polygonsArr)
         chromosome1.redrawPG()
         numImprovements = numImprovements+1
+        writer.writerow(str(fitness1) + "," + str(fitness2) + "," + str(fitness1-fitness2)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations)))
         
     text("Mutations: "+str(numMutations), 775, 25)
     text("Improvements: "+str(numImprovements), 775, 50)
     pctImprovement = 100*(numImprovements/numMutations)
     text("Percent Improvement: "+str(pctImprovement), 775, 75)
+
 
 def chooseOnePolyCrossover(parent1, parent2):
     global numPolys
@@ -106,7 +124,6 @@ def chooseOnePolyCrossover(parent1, parent2):
     newChro.redrawPG()
     return newChro
         
-    
 
 def bestSelection(populationArray):
     bestArray = []
@@ -121,6 +138,7 @@ def drawChromosome(position, chromosome, fitness, topText=""):
     image(chromosome.pg, position, 325)
     text("Fitness: "+str(int(fitness)), position, 550)
     text("Digits: "+str(len(str(int(fitness)))), position, 575)
+
 
 
 class Chromosome:
