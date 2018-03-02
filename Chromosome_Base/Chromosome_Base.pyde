@@ -18,11 +18,11 @@ originalImg = None
 numImprovements = 0.0
 numMutations = 0.0
 
-adata = createWriter("run.txt")
-adata.print("currently working on riverdale.png\n")
-adata.flush()
-adata.close()
-
+#adata = createWriter("run.txt")
+#adata.print("currently working on riverdale.png\n")
+#adata.flush()
+#adata.close()
+#
 
 def setup():
     
@@ -31,15 +31,15 @@ def setup():
     #randomSeed(100)
     global chromosome1
     global originalImg
-<<<<<<< HEAD
+#<<<<<<< HEAD
     originalImg = loadImage("monalisa.png")
     #originalImg = loadImage("chrome.png")
-=======
+#=======
     #originalImg = loadImage("monalisa.png")
-    with open('data.csv','wb') as csvfile:
-        writer = csv.writer(csvfile,delimiter=',')
-    originalImg = loadImage("riverdale.png")
->>>>>>> 97a26783d086d443f86c5f02d35c85c6cd87b375
+#    with open('data.csv','wb') as csvfile:
+#        writer = csv.writer(csvfile,delimiter=',')
+#    originalImg = loadImage("riverdale.png")
+#>>>>>>> 97a26783d086d443f86c5f02d35c85c6cd87b375
     #originalImg = loadImage("xp_background.png")
 
     size(2200,700)
@@ -103,7 +103,7 @@ def draw():
         chromosome1.polygonsArr = deepcopy(chromosome2.polygonsArr)
         chromosome1.redrawPG()
         numImprovements = numImprovements+1
-        writer.writerow(str(fitness1) + "," + str(fitness2) + "," + str(fitness1-fitness2)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations)))
+        #writer.writerow(str(fitness1) + "," + str(fitness2) + "," + str(fitness1-fitness2)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations)))
         
     text("Mutations: "+str(numMutations), 775, 25)
     text("Improvements: "+str(numImprovements), 775, 50)
