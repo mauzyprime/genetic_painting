@@ -1,5 +1,6 @@
 from polygon import Polygon
 from copy import deepcopy
+import csv
 
 
 mrKVariable = 5
@@ -31,7 +32,8 @@ def setup():
     global chromosome1
     global originalImg
     #originalImg = loadImage("monalisa.png")
-
+    with open('data.csv','wb') as csvfile:
+        writer = csv.writer(csvfile,delimiter=',')
     originalImg = loadImage("riverdale.png")
     #originalImg = loadImage("xp_background.png")
 
@@ -96,7 +98,7 @@ def draw():
         chromosome1.polygonsArr = deepcopy(chromosome2.polygonsArr)
         chromosome1.redrawPG()
         numImprovements = numImprovements+1
-        #saveStrings("results.txt",(str(fitness1) + "," + str(fitness2) + "," + str(fitness1-fitness2)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations))))
+        writer.writerow(str(fitness1) + "," + str(fitness2) + "," + str(fitness1-fitness2)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations)))
         
     text("Mutations: "+str(numMutations), 775, 25)
     text("Improvements: "+str(numImprovements), 775, 50)
