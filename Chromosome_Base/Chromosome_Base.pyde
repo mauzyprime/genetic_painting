@@ -10,8 +10,8 @@ chromosome1 = None
 
 initPop = 10
 populationArray = []
-numPolys = 50
-numVertices = 5
+numPolys = 250
+numVertices = 3
 originalImg = None
 
 numImprovements = 0.0
@@ -25,9 +25,8 @@ def setup():
     #randomSeed(100)
     global chromosome1
     global originalImg
-    #originalImg = loadImage("monalisa.png")
-
-    originalImg = loadImage("chrome.png")
+    originalImg = loadImage("monalisa.png")
+    #originalImg = loadImage("chrome.png")
     #originalImg = loadImage("xp_background.png")
 
     size(2200,700)
@@ -57,10 +56,10 @@ def draw():
     chromosome2 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
     chromosome2.polygonsArr = deepcopy(chromosome1.polygonsArr)
     
-    chromosome2.mediumMutate()
+    #chromosome2.mediumMutate()
     #chromosome2.mutatePercentChange()
     #chromosome2.megaMutate()
-    #chromosome2.mutateOnePoly()
+    chromosome2.mutateOnePoly()
     chromosome2.redrawPG()
     
     #image(chromosome2.pg, 525, 25)
@@ -68,14 +67,14 @@ def draw():
     fitness1 = chromosome1.fitness(originalImg)
     fitness2 = chromosome2.fitness(originalImg)
     
-    #drawChromosome(250, chromosome1, fitness1, "Best Chromosome")
-    #drawChromosome(500, chromosome2, fitness2)
+    drawChromosome(250, chromosome1, fitness1, "Best Chromosome")
+    drawChromosome(500, chromosome2, fitness2)
     position = 0
-    for c in populationArray:
-        c.mutateOnePoly()
-        c.redrawPG()
-        drawChromosome(position, c, c.fitness(originalImg))
-        position = position + 210
+    #for c in populationArray:
+        #c.mutateOnePoly()
+        #c.redrawPG()
+        #drawChromosome(position, c, c.fitness(originalImg))
+        #position = position + 210
     
     #text("Fitness: "+str(int(fitness1)), 275, 250)
     #text("Fitness: "+str(int(fitness2)), 525, 250)
@@ -99,7 +98,7 @@ def chooseOnePolyCrossover(parent1, parent2):
     global numVertices
     global originalImg
     newPolysArr = []
-    for i = numPolys/2:
+    for i in numPolys/2:
         newPolysArr.append(parent1.polygonsArr[random(numPolys)])
         newPolysArr.append(parent2.polygonsArr[random(numPolys)])
     newChro = Chromosome(numPolys, numVertices, originalImg.height, originalImage.width)
@@ -141,6 +140,7 @@ class Chromosome:
         self.myFitness = 0
         self.pg = createGraphics(w,h)
         self.redrawPG()
+        
     def redrawPG(self):
         self.pg.beginDraw()
         self.pg.background(255)
@@ -169,7 +169,7 @@ class Chromosome:
         poly.vertexCoords[vertex1][1] = int(random(0,200))
         
     def mutatePercentChange(self):
-        chanceMutate = .15
+        chanceMutate = .002
         for i in range(len(self.polygonsArr)): #For every polygon in the image
             for i2 in range(len(self.polygonsArr[i].vertexCoords)):#for every vertex of a polygon
                 doesMutate = random(1)
@@ -178,6 +178,7 @@ class Chromosome:
                     self.polygonsArr[i].vertexCoords[i2][0] = random(self.pwidth) #set x to random x
                     self.polygonsArr[i].myColor = color(random(255),random(255),random(255),random(255))
         return 0#placeholder for now.
+    
     def mutatePosition(self): #changes every vertex of every polygon
         for i in range(len(self.polygonsArr)):
             for k in range(len(self.polygonsArr[i].vertexCoords)):
@@ -262,6 +263,7 @@ class Chromosome:
                 self.polygonsArr[polygonChosen].vertexCoords[i2][0] = self.pwidth
             if self.polygonsArr[polygonChosen].vertexCoords[i2][0] < 0:
                 self.polygonsArr[polygonChosen].vertexCoords[i2][0] = 0
+                
     def fitness(self, originalImage):
         #Nolan Wuz Here
         #original image is a PImage; chromosome is a PGraphics
