@@ -9,10 +9,10 @@ willHolzmanHomeworkDone = 1
 nolanVariable = sqrt(-64)
 bestChromosome = None
 
-initPop = 10
-numChildrenPerGeneration = 4
+initPop = 6
+numChildrenPerGeneration = 2
 populationArray = []
-numPolys = 250
+numPolys = 30
 numVertices = 3
 originalImg = None
 writer = csv.writer(open('data1.csv','wb'),delimiter=' ')
@@ -40,13 +40,15 @@ def setup():
 
     with open('data.csv','wb') as csvfile:
         writer = csv.writer(csvfile,delimiter=',')
-    #originalImg = loadImage("monalisa.png")
+    originalImg = loadImage("monalisa.png")
     #originalImg = loadImage("chrome.png")
+
     originalImg = loadImage("riverdale.png")
+
 
     #originalImg = loadImage("xp_background.png")
 
-    size(2200,700)
+    size(1300,700)
     #print mrKVariable
     bestChromosome = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
 
@@ -61,6 +63,7 @@ def draw():
     global numImprovements
     global numMutations
     global populationArray
+
     global writer
     global pastImprovements
     global runsWithoutImprovement
@@ -69,8 +72,13 @@ def draw():
     else: 
         runsWithoutImprovement = 0
     pastImprovements= numImprovements
+
+    global numChildrenPerGeneration
+    global numPolys
+    global numVertices
+
     
-    hillclimber = True
+    hillclimber = False
     background(200)
     fill(0)
     if hillclimber:
@@ -125,77 +133,103 @@ def draw():
         pctImprovement = 100*(numImprovements/numMutations)
         text("Percent Improvement: "+str(pctImprovement), 775, 75)
     else:
-        
-        #Write the text labels for the 3 images
         text("Original Image", 25, 20)
-        #text("Current Chromosome", 275, 20)
-        #text("Test Chromosome", 525, 20)
-        
-        
-        #Draw the 3 images
+
         image(originalImg, 25, 25)
-        #chromosome2 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
-        #chromosome2.polygonsArr = deepcopy(chromosome1.polygonsArr)
-        
-        #chromosome2.mediumMutate()
-        #chromosome2.mutatePercentChange()
-        #chromosome2.megaMutate()
-        #chromosome2.mutateOnePoly()
-        #chromosome2.redrawPG()
-        
-        #image(chromosome2.pg, 525, 25)
     
         #writer.writerow(str(fitness1) + "," + str(fitness2) + "," + str(fitness1-fitness2)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations)))
 
         bestFitness = bestChromosome.fitness(originalImg)
-        #fitness2 = chromosome2.fitness(originalImg)
         
         text("Best Chromosome", 250, 20)
         image(bestChromosome.pg, 250, 25)
         text("Fitness: "+str(int(bestFitness)), 250, 250)
         text("Digits: "+str(len(str(int(bestFitness)))), 250, 275)
-        #drawChromosome(250, bestChromosome, bestFitness, "Best Chromosome")
-        #drawChromosome(500, chromosome2, fitness2)
-        position = 0
+        
+        
+        position = 10
         for c in populationArray:
-            c.mutateOnePoly()
+            #c.mediumMutate()
+            #c.mutatePercentChange(0.0001)
+            #c.megaMutate()
+            #c.mutateOnePoly()
             c.redrawPG()
             drawChromosome(position, c, c.fitness(originalImg))
+            if c.myFitness < bestFitness:
+                bestChromosome.polygonsArr = deepcopy(c.polygonsArr)
+                bestChromosome.redrawPG()
+                numImprovements = numImprovements+1
             position = position + 210
+            
+        populationArray = sorted(populationArray)
+        println("---------------------")
+        for c in populationArray:
+            println(c.myFitness)
+            #pass
+            
+            
+        for i in range(numChildrenPerGeneration):
+            populationArray.pop()
+            
+        childrenArray = []
+        for j in range(numChildrenPerGeneration):
+            #println(int(random(len(populationArray))))
+            #child = chooseOneRandomPolyCrossover(populationArray[int(random(len(populationArray)))], populationArray[int(random(len(populationArray)))])
+            child = oneOrOtherCrossover(populationArray[int(random(len(populationArray)))], populationArray[int(random(len(populationArray)))])
+            #child.mediumMutate()
+            #child.mutatePercentChange(0.005)
+            #child.megaMutate()
+            child.mutateOnePoly()
+            child.redrawPG()
+            childrenArray.append(child)
         
-        #text("Fitness: "+str(int(fitness1)), 275, 250)
-        #text("Fitness: "+str(int(fitness2)), 525, 250)
-        #text("Digits: "+str(len(str(int(fitness1)))), 275, 275)
-        #text("Digits: "+str(len(str(int(fitness2)))), 525, 275)
+        for c in childrenArray:
+            populationArray.append(c)
+            c = None
+        #populationArray = sorted(populationArray)
+            
         
         numMutations = numMutations+1
 
         
-        #if bestFitness > fitness2:
-            #chromosome1.polygonsArr = deepcopy(chromosome2.polygonsArr)
-            #chromosome1.redrawPG()
-            #numImprovements = numImprovements+1
-            #writer.writerow(str(fitness1) + "," + str(fitness2) + "," + str(fitness1-fitness2)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations)))
-            
         text("Mutations: "+str(numMutations), 775, 25)
         text("Improvements: "+str(numImprovements), 775, 50)
         pctImprovement = 100*(numImprovements/numMutations)
         text("Percent Improvement: "+str(pctImprovement), 775, 75)
+        text("Population Size: "+str(len(populationArray)), 775, 100)
+        text("Children Per Generation: "+str(numChildrenPerGeneration), 775, 125)
+        text("Polygons: "+str(numPolys), 775, 150)
+        text("Vertices: "+str(numVertices), 775, 175)
 
 
-def chooseOnePolyCrossover(parent1, parent2):
+def chooseOneRandomPolyCrossover(parent1, parent2):
     global numPolys
     global numVertices
     global originalImg
     newPolysArr = []
-    for i in numPolys/2:
-        newPolysArr.append(parent1.polygonsArr[random(numPolys)])
-        newPolysArr.append(parent2.polygonsArr[random(numPolys)])
-    newChro = Chromosome(numPolys, numVertices, originalImg.height, originalImage.width)
+    for i in range(numPolys/2):
+        newPolysArr.append(deepcopy(parent1.polygonsArr[int(random(numPolys))]))
+        newPolysArr.append(deepcopy(parent2.polygonsArr[int(random(numPolys))]))
+    newChro = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
     newChro.polygonsArr = newPolysArr
     newChro.redrawPG()
     return newChro
-        
+
+def oneOrOtherCrossover(parent1, parent2):
+    global numPolys
+    global numVertices
+    global originalImg
+    newPolysArr = []
+    for i in range(numPolys):
+        if random(1) < 0.5:
+            newPolysArr.append(deepcopy(parent1.polygonsArr[i]))
+        else:
+            newPolysArr.append(deepcopy(parent2.polygonsArr[i]))
+    newChro = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
+    newChro.polygonsArr = newPolysArr
+    newChro.redrawPG()
+    return newChro
+            
 
 def bestSelection(populationArray):
     bestArray = []
@@ -220,8 +254,8 @@ class Chromosome:
             verticesList = []
             for i in range(numVertices):
                 verticesList.append([random(w),random(h)])
-            #nPolygon = Polygon(numVertices, color(random(255),random(255),random(255),random(255)),verticesList)
-            nPolygon = Polygon(numVertices, color(0,0,0,1),verticesList)
+            nPolygon = Polygon(numVertices, color(random(255),random(255),random(255),random(255)),verticesList)
+            #nPolygon = Polygon(numVertices, color(0,0,0,1),verticesList)
             self.polygonsArr.append(nPolygon)
         self.numVertices = numVertices
         self.numPolygons = numPolys
@@ -266,8 +300,8 @@ class Chromosome:
         poly.vertexCoords[vertex1][0] = int(random(0,200))
         poly.vertexCoords[vertex1][1] = int(random(0,200))
         
-    def mutatePercentChange(self):
-        chanceMutate = .002
+    def mutatePercentChange(self, mutatePct):
+        chanceMutate = mutatePct
         for i in range(len(self.polygonsArr)): #For every polygon in the image
             for i2 in range(len(self.polygonsArr[i].vertexCoords)):#for every vertex of a polygon
                 doesMutate = random(1)
@@ -361,6 +395,9 @@ class Chromosome:
                 self.polygonsArr[polygonChosen].vertexCoords[i2][0] = self.pwidth
             if self.polygonsArr[polygonChosen].vertexCoords[i2][0] < 0:
                 self.polygonsArr[polygonChosen].vertexCoords[i2][0] = 0
+    
+    def returnFitness(self):
+        return self.myFitness
                 
     def fitness(self, originalImage):
         #Nolan Wuz Here
@@ -382,7 +419,7 @@ class Chromosome:
                 totalFitness += sqrt((redTotal * redTotal) + (blueTotal * blueTotal) + (greenTotal * greenTotal))            
         else:
             print "lengths do not match. "
-        print totalFitness
+        #print totalFitness
         self.myFitness = totalFitness
         return totalFitness  
         
