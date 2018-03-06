@@ -57,61 +57,114 @@ def draw():
     global numMutations
     global populationArray
     
+    hillclimber = True
     background(200)
     fill(0)
-    
-    #Write the text labels for the 3 images
-    text("Original Image", 25, 20)
-    #text("Current Chromosome", 275, 20)
-    #text("Test Chromosome", 525, 20)
-    
-    
-    #Draw the 3 images
-    image(originalImg, 25, 25)
-    #chromosome2 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
-    #chromosome2.polygonsArr = deepcopy(chromosome1.polygonsArr)
-    
-    #chromosome2.mediumMutate()
-    #chromosome2.mutatePercentChange()
-    #chromosome2.megaMutate()
-    #chromosome2.mutateOnePoly()
-    #chromosome2.redrawPG()
-    
-    #image(chromosome2.pg, 525, 25)
-
-    bestFitness = bestChromosome.fitness(originalImg)
-    #fitness2 = chromosome2.fitness(originalImg)
-    
-    text("Best Chromosome", 250, 20)
-    image(bestChromosome.pg, 250, 25)
-    text("Fitness: "+str(int(bestFitness)), 250, 250)
-    text("Digits: "+str(len(str(int(bestFitness)))), 250, 275)
-    #drawChromosome(250, bestChromosome, bestFitness, "Best Chromosome")
-    #drawChromosome(500, chromosome2, fitness2)
-    position = 0
-    for c in populationArray:
-        c.mutateOnePoly()
-        c.redrawPG()
-        drawChromosome(position, c, c.fitness(originalImg))
-        position = position + 210
-    
-    #text("Fitness: "+str(int(fitness1)), 275, 250)
-    #text("Fitness: "+str(int(fitness2)), 525, 250)
-    #text("Digits: "+str(len(str(int(fitness1)))), 275, 275)
-    #text("Digits: "+str(len(str(int(fitness2)))), 525, 275)
-    
-    numMutations = numMutations+1
-    
-    #if bestFitness > fitness2:
-        #chromosome1.polygonsArr = deepcopy(chromosome2.polygonsArr)
-        #chromosome1.redrawPG()
-        #numImprovements = numImprovements+1
-        #writer.writerow(str(fitness1) + "," + str(fitness2) + "," + str(fitness1-fitness2)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations)))
+    if hillclimber:
+        #Write the text labels for the 3 images
+        text("Original Image", 25, 20)
+        #text("Current Chromosome", 275, 20)
+        text("Test Chromosome", 525, 20)
         
-    text("Mutations: "+str(numMutations), 775, 25)
-    text("Improvements: "+str(numImprovements), 775, 50)
-    pctImprovement = 100*(numImprovements/numMutations)
-    text("Percent Improvement: "+str(pctImprovement), 775, 75)
+        
+        #Draw the 3 images
+        image(originalImg, 25, 25)
+        chromosome2 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
+        chromosome2.polygonsArr = deepcopy(bestChromosome.polygonsArr)
+        
+        #chromosome2.mediumMutate()
+        #chromosome2.mutatePercentChange()
+        #chromosome2.megaMutate()
+        chromosome2.mutateOnePoly()
+        chromosome2.redrawPG()
+        
+        image(chromosome2.pg, 525, 25)
+    
+        bestFitness = bestChromosome.fitness(originalImg)
+        fitness2 = chromosome2.fitness(originalImg)
+        
+        text("Best Chromosome", 250, 20)
+        image(bestChromosome.pg, 250, 25)
+        #text("Fitness: "+str(int(bestFitness)), 250, 250)
+        #text("Digits: "+str(len(str(int(bestFitness)))), 250, 275)
+        position = 0
+        #for c in populationArray:
+            #c.mutateOnePoly()
+            #c.redrawPG()
+            #drawChromosome(position, c, c.fitness(originalImg))
+            #position = position + 210
+        
+        text("Fitness: "+str(int(bestFitness)), 275, 250)
+        text("Fitness: "+str(int(fitness2)), 525, 250)
+        text("Digits: "+str(len(str(int(bestFitness)))), 275, 275)
+        text("Digits: "+str(len(str(int(fitness2)))), 525, 275)
+        
+        numMutations = numMutations+1
+        
+        if bestFitness > fitness2:
+            bestChromosome.polygonsArr = deepcopy(chromosome2.polygonsArr)
+            bestChromosome.redrawPG()
+            numImprovements = numImprovements+1
+            #writer.writerow(str(fitness1) + "," + str(fitness2) + "," + str(fitness1-fitness2)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations)))
+            
+        text("Mutations: "+str(numMutations), 775, 25)
+        text("Improvements: "+str(numImprovements), 775, 50)
+        pctImprovement = 100*(numImprovements/numMutations)
+        text("Percent Improvement: "+str(pctImprovement), 775, 75)
+    else:
+        
+        #Write the text labels for the 3 images
+        text("Original Image", 25, 20)
+        #text("Current Chromosome", 275, 20)
+        #text("Test Chromosome", 525, 20)
+        
+        
+        #Draw the 3 images
+        image(originalImg, 25, 25)
+        #chromosome2 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
+        #chromosome2.polygonsArr = deepcopy(chromosome1.polygonsArr)
+        
+        #chromosome2.mediumMutate()
+        #chromosome2.mutatePercentChange()
+        #chromosome2.megaMutate()
+        #chromosome2.mutateOnePoly()
+        #chromosome2.redrawPG()
+        
+        #image(chromosome2.pg, 525, 25)
+    
+        bestFitness = bestChromosome.fitness(originalImg)
+        #fitness2 = chromosome2.fitness(originalImg)
+        
+        text("Best Chromosome", 250, 20)
+        image(bestChromosome.pg, 250, 25)
+        text("Fitness: "+str(int(bestFitness)), 250, 250)
+        text("Digits: "+str(len(str(int(bestFitness)))), 250, 275)
+        #drawChromosome(250, bestChromosome, bestFitness, "Best Chromosome")
+        #drawChromosome(500, chromosome2, fitness2)
+        position = 0
+        for c in populationArray:
+            c.mutateOnePoly()
+            c.redrawPG()
+            drawChromosome(position, c, c.fitness(originalImg))
+            position = position + 210
+        
+        #text("Fitness: "+str(int(fitness1)), 275, 250)
+        #text("Fitness: "+str(int(fitness2)), 525, 250)
+        #text("Digits: "+str(len(str(int(fitness1)))), 275, 275)
+        #text("Digits: "+str(len(str(int(fitness2)))), 525, 275)
+        
+        numMutations = numMutations+1
+        
+        #if bestFitness > fitness2:
+            #chromosome1.polygonsArr = deepcopy(chromosome2.polygonsArr)
+            #chromosome1.redrawPG()
+            #numImprovements = numImprovements+1
+            #writer.writerow(str(fitness1) + "," + str(fitness2) + "," + str(fitness1-fitness2)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations)))
+            
+        text("Mutations: "+str(numMutations), 775, 25)
+        text("Improvements: "+str(numImprovements), 775, 50)
+        pctImprovement = 100*(numImprovements/numMutations)
+        text("Percent Improvement: "+str(pctImprovement), 775, 75)
 
 
 def chooseOnePolyCrossover(parent1, parent2):
