@@ -71,7 +71,7 @@ def draw():
     text("Original Image", 25, 20)
     #text("Current Chromosome", 275, 20)
     #text("Test Chromosome", 525, 20)
-    rect(
+    
     
     #Draw the 3 images
     image(originalImg, 25, 25)
