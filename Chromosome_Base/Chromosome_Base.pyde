@@ -116,12 +116,11 @@ def draw():
     numMutations = numMutations+1
     
 
-    if fitness1 > fitness2:
-        chromosome1.polygonsArr = deepcopy(chromosome2.polygonsArr)
-        chromosome1.redrawPG()
-        numImprovements = numImprovements+1
-        rowRowRow = str(fitness1).join([",",str(fitness2),",", str(fitness1-fitness2), "," , str(numImprovements) ,",",str(numMutations),",", str(100*(numImprovements/numMutations)), ","])
-        writer.writerow(rowRowRow)
+    #if bestFitness > fitness2:
+        #chromosome1.polygonsArr = deepcopy(chromosome2.polygonsArr)
+        #chromosome1.redrawPG()
+        #numImprovements = numImprovements+1
+        #writer.writerow(str(fitness1) + "," + str(fitness2) + "," + str(fitness1-fitness2)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations)))
 
         
     text("Mutations: "+str(numMutations), 775, 25)
