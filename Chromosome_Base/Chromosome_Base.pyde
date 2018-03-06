@@ -109,7 +109,7 @@ def draw():
     
     numMutations = numMutations+1
     
-    #if fitness1 > fitness2:
+    #if bestFitness > fitness2:
         #chromosome1.polygonsArr = deepcopy(chromosome2.polygonsArr)
         #chromosome1.redrawPG()
         #numImprovements = numImprovements+1
