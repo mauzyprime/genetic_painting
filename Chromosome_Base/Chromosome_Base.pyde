@@ -32,7 +32,7 @@ def setup():
     frameRate(100000000)
     #randomSeed(100)
     
-    global chromosome1
+    global bestChromosome
     global originalImg
     originalImg = loadImage("monalisa.png")
     #originalImg = loadImage("chrome.png")
@@ -51,7 +51,6 @@ def setup():
     size(2200,700)
     #print mrKVariable
     bestChromosome = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
-    bestChromosome.redrawPG()
 
     for i in range(initPop):
         #chromosome = None
@@ -90,7 +89,11 @@ def draw():
     bestFitness = bestChromosome.fitness(originalImg)
     #fitness2 = chromosome2.fitness(originalImg)
     
-    drawChromosome(250, bestChromosome, fitness, "Best Chromosome")
+    text("Best Chromosome", 250, 20)
+    image(bestChromosome.pg, 250, 25)
+    text("Fitness: "+str(int(bestFitness)), 250, 250)
+    text("Digits: "+str(len(str(int(bestFitness)))), 250, 275)
+    #drawChromosome(250, bestChromosome, bestFitness, "Best Chromosome")
     #drawChromosome(500, chromosome2, fitness2)
     position = 0
     for c in populationArray:
@@ -106,10 +109,10 @@ def draw():
     
     numMutations = numMutations+1
     
-    if fitness1 > fitness2:
-        chromosome1.polygonsArr = deepcopy(chromosome2.polygonsArr)
-        chromosome1.redrawPG()
-        numImprovements = numImprovements+1
+    #if fitness1 > fitness2:
+        #chromosome1.polygonsArr = deepcopy(chromosome2.polygonsArr)
+        #chromosome1.redrawPG()
+        #numImprovements = numImprovements+1
         #writer.writerow(str(fitness1) + "," + str(fitness2) + "," + str(fitness1-fitness2)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations)))
         
     text("Mutations: "+str(numMutations), 775, 25)
