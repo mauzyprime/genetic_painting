@@ -9,10 +9,10 @@ willHolzmanHomeworkDone = 1
 nolanVariable = sqrt(-64)
 bestChromosome = None
 
-initPop = 6
-numChildrenPerGeneration = 2
+initPop = 18
+numChildrenPerGeneration = 6
 populationArray = []
-numPolys = 30
+numPolys = 50
 numVertices = 3
 originalImg = None
 
@@ -29,7 +29,7 @@ def setup():
     
     #frameRate(0.5)
     frameRate(100000000)
-    #randomSeed(100)
+    randomSeed(100)
     
     global bestChromosome
     global originalImg
@@ -40,8 +40,9 @@ def setup():
     #originalImg = loadImage("chrome.png")
     #originalImg = loadImage("riverdale.png")
     #originalImg = loadImage("xp_background.png")
+    #originalImg = loadImage("mondrian.png")
 
-    size(1300,700)
+    size(4000,700)
     #print mrKVariable
     bestChromosome = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
 
@@ -114,6 +115,10 @@ def draw():
         text("Improvements: "+str(numImprovements), 775, 50)
         pctImprovement = 100*(numImprovements/numMutations)
         text("Percent Improvement: "+str(pctImprovement), 775, 75)
+        #text("Population Size: "+str(len(populationArray)), 775, 100)
+        text("Children Per Generation: "+str(numChildrenPerGeneration), 775, 125)
+        text("Polygons: "+str(numPolys), 775, 150)
+        text("Vertices: "+str(numVertices), 775, 175)
     else:
         text("Original Image", 25, 20)
 
@@ -154,13 +159,15 @@ def draw():
         childrenArray = []
         for j in range(numChildrenPerGeneration):
             #println(int(random(len(populationArray))))
-            #child = chooseOneRandomPolyCrossover(populationArray[int(random(len(populationArray)))], populationArray[int(random(len(populationArray)))])
-            child = oneOrOtherCrossover(populationArray[int(random(len(populationArray)))], populationArray[int(random(len(populationArray)))])
+            child = chooseOneRandomPolyCrossover(populationArray[int(random(len(populationArray)))], populationArray[int(random(len(populationArray)))])
+            #child = oneOrOtherCrossover(populationArray[int(random(len(populationArray)))], populationArray[int(random(len(populationArray)))])
+            
             #child.mediumMutate()
             #child.mutatePercentChange(0.005)
             #child.megaMutate()
             child.mutateOnePoly()
             child.redrawPG()
+            
             childrenArray.append(child)
         
         for c in childrenArray:
