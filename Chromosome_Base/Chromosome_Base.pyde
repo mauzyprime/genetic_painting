@@ -15,30 +15,49 @@ populationArray = []
 numPolys = 50
 numVertices = 3
 originalImg = None
+writer = csv.writer(open('data1.csv','wb'),delimiter=' ')
+writer.writerow("Test")
+
 
 numImprovements = 0.0
 numMutations = 0.0
+pastImprovements = 0.0
+runsWithoutImprovement = 0.0
 
-adata = createWriter("run.txt")
-adata.print("currently working on riverdale.png\n")
-adata.flush()
-adata.close()
-
+#adata = createWriter("run.txt")
+#adata.print("currently working on riverdale.png\n")
+#adata.flush()
+#adata.close()
+#adata = createWriter("run.txt")
+#adata.print("currently working on riverdale.png\n")
+#adata.flush()
+#adata.close()
+#
 
 def setup():
-    
+    rectOver = False
     #frameRate(0.5)
     frameRate(100000000)
     randomSeed(100)
     
     global bestChromosome
     global originalImg
+    originalImg = loadImage("monalisa.png")
+    #originalImg = loadImage("chrome.png")
+    #originalImg = loadImage("monalisa.png")
+#    with open('data.csv','wb') as csvfile:
+#        writer = csv.writer(csvfile,delimiter=',')
+#    originalImg = loadImage("riverdale.png")
     
+
     with open('data.csv','wb') as csvfile:
         writer = csv.writer(csvfile,delimiter=',')
     originalImg = loadImage("monalisa.png")
     #originalImg = loadImage("chrome.png")
-    #originalImg = loadImage("riverdale.png")
+
+    originalImg = loadImage("riverdale.png")
+
+
     #originalImg = loadImage("xp_background.png")
     #originalImg = loadImage("mondrian.png")
 
@@ -57,10 +76,20 @@ def draw():
     global numImprovements
     global numMutations
     global populationArray
+    drawButton(25,25)
+
+    global writer
+    global pastImprovements
+    global runsWithoutImprovement
+    if pastImprovements == numImprovements:
+        runsWithoutImprovement +=1 
+    else: 
+        runsWithoutImprovement = 0
+    pastImprovements= numImprovements
+
     global numChildrenPerGeneration
     global numPolys
     global numVertices
-    
     hillclimber = False
     background(200)
     fill(0)
@@ -109,7 +138,7 @@ def draw():
             bestChromosome.polygonsArr = deepcopy(chromosome2.polygonsArr)
             bestChromosome.redrawPG()
             numImprovements = numImprovements+1
-            #writer.writerow(str(fitness1) + "," + str(fitness2) + "," + str(fitness1-fitness2)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations)))
+            writer.writerow(str(bestFitness) + "," + str(fitness2) + "," + str(bestFitness-fitness2)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations)))
             
         text("Mutations: "+str(numMutations), 775, 25)
         text("Improvements: "+str(numImprovements), 775, 50)
@@ -124,6 +153,8 @@ def draw():
 
         image(originalImg, 25, 25)
     
+        #writer.writerow(str(fitness1) + "," + str(fitness2) + "," + str(fitness1-fitness2)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations)))
+
         bestFitness = bestChromosome.fitness(originalImg)
         
         text("Best Chromosome", 250, 20)
@@ -177,6 +208,7 @@ def draw():
             
         
         numMutations = numMutations+1
+
         
         text("Mutations: "+str(numMutations), 775, 25)
         text("Improvements: "+str(numImprovements), 775, 50)
@@ -407,5 +439,13 @@ class Chromosome:
             print "lengths do not match. "
         #print totalFitness
         self.myFitness = totalFitness
-        return totalFitness  
+        return totalFitness
+
+def drawButton(x,y):
+    stroke(255)
+    rect(x,y,500,500)
+    println("TESTTS")
+    if mouseX >=x and mouseX <=x+500 and mouseY >=y and mouseY <=y+500:
+        println("THIS IS WORKING")
+    #pass
         
