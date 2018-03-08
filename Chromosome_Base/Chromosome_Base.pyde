@@ -16,6 +16,7 @@ numPolys = 250
 numVertices = 3
 originalImg = None
 
+
 numImprovements = 0.0
 numMutations = 0.0
 
@@ -27,7 +28,7 @@ numMutations = 0.0
 #
 
 def setup():
-    
+    rectOver = False
     #frameRate(0.5)
     frameRate(100000000)
     #randomSeed(100)
@@ -63,6 +64,7 @@ def draw():
     global numImprovements
     global numMutations
     global populationArray
+    drawButton(25,25)
     
     background(200)
     fill(0)
@@ -322,5 +324,13 @@ class Chromosome:
             print "lengths do not match. "
         print totalFitness
         self.myFitness = totalFitness
-        return totalFitness  
+        return totalFitness
+
+def drawButton(x,y):
+    stroke(255)
+    rect(x,y,500,500)
+    println("TESTTS")
+    if mouseX >=x and mouseX <=x+500 and mouseY >=y and mouseY <=y+500:
+        println("THIS IS WORKING")
+    #pass
         
