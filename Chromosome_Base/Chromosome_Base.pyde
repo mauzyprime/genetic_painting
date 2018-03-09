@@ -18,6 +18,7 @@ originalImg = None
 writer = csv.writer(open('data1.csv','wb'),delimiter=' ')
 writer.writerow("Test")
 
+windowWidth = (110*initPop)+10
 
 numImprovements = 0.0
 numMutations = 0.0
@@ -42,6 +43,7 @@ def setup():
     
     global bestChromosome
     global originalImg
+    global initPop
     #originalImg = loadImage("monalisa.png")
     #originalImg = loadImage("chrome.png")
     #originalImg = loadImage("monalisa.png")
@@ -52,13 +54,13 @@ def setup():
 
     with open('data.csv','wb') as csvfile:
         writer = csv.writer(csvfile,delimiter=',')
-    #originalImg = loadImage("monalisa.png")
-    originalImg = loadImage("chrome.png")
+    originalImg = loadImage("monalisa.png")
+    #originalImg = loadImage("chrome.png")
     #originalImg = loadImage("riverdale.png")
     #originalImg = loadImage("xp_background.png")
     #originalImg = loadImage("mondrian.png")
 
-    size(2000,700)
+    size(windowWidth,700)
     #print mrKVariable
     bestChromosome = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
 
@@ -199,7 +201,7 @@ def draw():
             #child.mutatePercentChange(0.005)
             #child.megaMutate()
             #child.mutateOnePoly()
-            child.mutateColorOrPosition(1)
+            child.mutateColorOrPosition(10)
             child.redrawPG()
             
             childrenArray.append(child)
@@ -424,10 +426,19 @@ class Chromosome:
         for i in range(nPolysToMutate):
             polygonChosen = self.polygonsArr[int(random(len(self.polygonsArr)))]
             if(random(1)<0.5):
-                r=int(random(255))
-                g=int(random(255))
-                b=int(random(255))
-                a=int(random(255))
+                r = red(polygonChosen.myColor)
+                g = green(polygonChosen.myColor)
+                b = blue(polygonChosen.myColor)
+                a = alpha(polygonChosen.myColor)
+                rand = random(4)
+                if(rand<1):
+                    r=int(random(255))
+                elif(rand<2):
+                    g=int(random(255))
+                elif(rand<3):
+                    b=int(random(255))
+                else:
+                    a=int(random(255))
                 polygonChosen.myColor=color(r,g,b,a)
             else:
                 vtx = polygonChosen.vertexCoords[int(random(len(polygonChosen.vertexCoords)))] #for every vertex of a polygon
