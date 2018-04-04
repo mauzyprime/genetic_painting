@@ -12,8 +12,8 @@ bestChromosome = None
 initPop = 12
 numChildrenPerGeneration = 4
 populationArray = []
-numPolys = 30
-numVertices = 6
+numPolys = 75
+numVertices = 7
 originalImg = None
 writer = csv.writer(open('data2.csv','wb'))
 writer.writerow([str(1.983)])
@@ -106,19 +106,19 @@ def draw():
         chromosome2 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
         chromosome2.polygonsArr = deepcopy(bestChromosome.polygonsArr)
         
-        chromosome2.mediumMutate()
+        #chromosome2.mediumMutate()
         #chromosome2.mutatePercentChange()
         #chromosome2.megaMutate()
         #chromosome2.mutateOnePoly()
 
         rand=random(1)
 
-        # if(rand<0.5):
-        #     chromosome2.minorChangeEachPoly(0.05)
-        # elif(rand<0.98):
-        #     chromosome2.mediumMutate()
-        # else:
-        #     chromosome2.megaMutate()
+        if(rand<0.5):
+            chromosome2.minorChangeEachPoly(0.05)
+        elif(rand<0.98):
+            chromosome2.mediumMutate()
+        else:
+            chromosome2.megaMutate()
             
         chromosome2.redrawPG()
         
@@ -158,7 +158,7 @@ def draw():
         pctImprovement = 100*(numImprovements/numMutations)
         text("Percent Improvement: "+str(pctImprovement), 775, 75)
         #text("Population Size: "+str(len(populationArray)), 775, 100)
-        text("Children Per Generation: "+str(numChildrenPerGeneration), 775, 125)
+        #text("Children Per Generation: "+str(numChildrenPerGeneration), 775, 125)
         text("Polygons: "+str(numPolys), 775, 150)
         text("Vertices: "+str(numVertices), 775, 175)
         
@@ -326,9 +326,9 @@ class Chromosome:
             for i in range(numVertices):
                 #verticesList.append([random(-w/4,w*5/4),random(-h/4, h*5/4)])
                 verticesList.append([random(0,w),random(0,w)])
-            nPolygon = Polygon(numVertices, color(random(255),random(255),random(255),random(255)),verticesList)
+            #nPolygon = Polygon(numVertices, color(random(255),random(255),random(255),random(255)),verticesList)
             #nPolygon = Polygon(numVertices, color(random(255),random(255),random(255)),verticesList)
-            #nPolygon = Polygon(numVertices, color(127,127,127,127),verticesList)
+            nPolygon = Polygon(numVertices, color(255,255,255,255),verticesList)
             self.polygonsArr.append(nPolygon)
         self.numVertices = numVertices
         self.numPolygons = numPolys
