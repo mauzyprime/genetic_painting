@@ -15,8 +15,8 @@ populationArray = []
 numPolys = 30
 numVertices = 3
 originalImg = None
-writer = csv.writer(open('data1.csv','wb'),delimiter=' ')
-writer.writerow("Test")
+writer = csv.writer(open('data2.csv','wb'))
+writer.writerow([str(1.983)])
 
 numImprovements = 0.0
 numMutations = 0.0
@@ -40,7 +40,7 @@ def setup():
 
     with open('data.csv','wb') as csvfile:
         writer = csv.writer(csvfile,delimiter=',')
-    originalImg = loadImage("monalisa.png")
+    #originalImg = loadImage("birthday-gift-cool-wassily-kandinsky-abstract.png")
     #originalImg = loadImage("chrome.png")
 
     originalImg = loadImage("riverdale.png")
@@ -78,7 +78,7 @@ def draw():
     global numVertices
 
     
-    hillclimber = False
+    hillclimber = True
     background(200)
     fill(0)
     if hillclimber:
@@ -93,10 +93,10 @@ def draw():
         chromosome2 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
         chromosome2.polygonsArr = deepcopy(bestChromosome.polygonsArr)
         
-        #chromosome2.mediumMutate()
+        chromosome2.mediumMutate()
         #chromosome2.mutatePercentChange()
         #chromosome2.megaMutate()
-        chromosome2.mutateOnePoly()
+        #chromosome2.mutateOnePoly()
         chromosome2.redrawPG()
         
         image(chromosome2.pg, 525, 25)
@@ -126,7 +126,8 @@ def draw():
             bestChromosome.polygonsArr = deepcopy(chromosome2.polygonsArr)
             bestChromosome.redrawPG()
             numImprovements = numImprovements+1
-            writer.writerow(str(bestFitness) + "," + str(fitness2) + "," + str(bestFitness-fitness2)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations)))
+            writer.writerow([str(bestFitness)]+ [str(fitness2)]+ [str(bestFitness-fitness2)]+ [str(numImprovements)]+[str(numMutations)]+ [str(100*(numImprovements/numMutations))])
+            saveFrame("moment-######.png")
             
         text("Mutations: "+str(numMutations), 775, 25)
         text("Improvements: "+str(numImprovements), 775, 50)
@@ -159,6 +160,8 @@ def draw():
                 bestChromosome.polygonsArr = deepcopy(c.polygonsArr)
                 bestChromosome.redrawPG()
                 numImprovements = numImprovements+1
+                #writer.writerow(str(bestFitness) + "," + str(c.myFitness) + "," + str(bestFitness-c.myFitness)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations)))
+
             position = position + 210
             
         populationArray = sorted(populationArray)
