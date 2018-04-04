@@ -1,0 +1,62 @@
+<html>
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+<h2>This is the Hill We Want to Climb On: How does the AI class's Painting Project work?</h2>
+<i>Our project develops a fascimile of a given image, all by itself. But how?<i>
+  <b>The below explanation requires zero coding knowledge!!!</b>
+  <p>
+    As you can see in the videos, our software magically replicates a chosen image over time.
+    This is done through a complex series of trial-and-error.
+    Each version the computer displays gets slightly more similar to the original image.
+    Pretty cool, right?
+  </p>
+  <h3>It's the polygons, stupid </h3>
+  <p>Each computer-generated image you see cycling through is made up of a number of polygons.
+  At the start of each experiment, we (the coders) pick the number of polygons in the image,
+  how many vertices each polygon has, and whether the background is white or black. The computer
+  randomly seeds an image made up of our chosen number of polygons. Each polygon has a randomly chosen
+  color, transparencyy, and location (the coordinates of each vertex.)
+  The term 'image' is used a bit misleadingly here. Each image the computer creates is actually
+  just a visual representation of the list of polygons the computer has created, called an array.
+  Think of it like a spreadsheet, with each row representing a different polygon, with a column each for color,
+  transparency, and the pixel coordinates of each of its vertices. The computer reads the spreadsheet extremely quickly
+  and renders it for each iteration of the duplicating-a-picture process. So we'll use "collection of polygons", "iteration",
+  and "image" interchangeably in this explainer.</p>
+  <h3>Fitness(with a brief interlude into the fact that Computers Lack Actual Eyes)</h3>
+  <p>In order to get closer and closer to a copy of the target image, the computer must have a way
+  of seeing how accurate the current combination of polygons is. A human could simply glance at the original
+  and see what was inaccurate or in need of further detail, but software does not (really) have the capability
+  for qualitative analysis like this. The emerging field of computer vision, computers analyzing an image in its
+  entirety instead of pixel-by-pixel, does have potential solutions to this, but they are well beyond the scope of
+  this class and much harder to execute. A computer can play a Highlights magazine style spot-the-difference game holistically,
+  instead of counting the number of differing pixels saying "there's a blob in image A and not in image B", but it can't quite yet
+  correct the discrepencies through the building-polygons method described above. Thus, we at RCS AI delved into the
+  world of fitness functions: mathematical formulas that spit out the 'fitness' of an attempted fascimile like this one.
+  After consulting the literature, we chose a function that finds the sums of the difference between each pixel in the two images.
+  The lower the sum, the more 'fit' the image. Extrapolating from the Pythagorean theorem, we sum the differences between green, red, blue, and transparency
+  numeric values for, say, pixel 1 in the original image and pixel 1 in the computer image, and add the square root of all that to the final tally.
+  This is one of the moments we are very, very grateful for just how fast computers can do arithmetic.
+  We use the fitness function to figure out how to go from one iteration to the next. To get better, we must have a way of
+  deciding what 'better' really is.</p>
+  <h3>teenage mutant ninja functions</h3>
+  <p>So how does the array change? There's no set way for an artificial intelligence algorithm to do this.
+  Each method has to be specific to the scenario, whether the computer is painting, writing a Saturday Night Live sketch,
+  or developing a cancer drug chemical formula. </p>
+
+  <h3>The hills are alive....</h3>
+  <h3>bonus round: deathmatch!!!!</h3>
+  <p>
+    The infrastructure of generating polygons, visualizing them, running the fitness and mutation functions, and moving on to better
+    versions took a few weeks to build, so once it finally worked we spent a few days entranced by the flashing shapes that eventually
+    looked like the images we eagerly inputted. We putzed around with different types of mutation functions, eventually settling on the
+    multiple-functions-for-different-needs strategy mentioned above. However, as our time on the project came to a close we began looking
+    into traditional genetic-algorithm methods of different versions competing against each other, in a sort of natural-selection/death-match
+    type thing. 
+  </p>
+  <h2>so will AI kill us all?</h2>
+  <p>If Haley Joel Osment can survive a Jude Law sci-fy Pinnochio movie, we can survive the future of the internet.
+  </p>
+</body>
+</html>
