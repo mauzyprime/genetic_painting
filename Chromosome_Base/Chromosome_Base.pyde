@@ -9,14 +9,16 @@ willHolzmanHomeworkDone = 1
 nolanVariable = sqrt(-64)
 bestChromosome = None
 
-initPop = 6
-numChildrenPerGeneration = 2
+initPop = 12
+numChildrenPerGeneration = 4
 populationArray = []
-numPolys = 30
-numVertices = 3
+numPolys = 50
+numVertices = 6
 originalImg = None
 writer = csv.writer(open('data2.csv','wb'))
 writer.writerow([str(1.983)])
+
+windowWidth = (110*initPop)+10
 
 numImprovements = 0.0
 numMutations = 0.0
@@ -27,28 +29,40 @@ runsWithoutImprovement = 0.0
 #adata.print("currently working on riverdale.png\n")
 #adata.flush()
 #adata.close()
-
+#adata = createWriter("run.txt")
+#adata.print("currently working on riverdale.png\n")
+#adata.flush()
+#adata.close()
+#
 
 def setup():
-    
+    rectOver = False
     #frameRate(0.5)
     frameRate(100000000)
-    #randomSeed(100)
+    randomSeed(100)
     
     global bestChromosome
     global originalImg
+    global initPop
+    #originalImg = loadImage("monalisa.png")
+    #originalImg = loadImage("chrome.png")
+    #originalImg = loadImage("monalisa.png")
+#    with open('data.csv','wb') as csvfile:
+#        writer = csv.writer(csvfile,delimiter=',')
+#    originalImg = loadImage("riverdale.png")
+    
 
     with open('data.csv','wb') as csvfile:
         writer = csv.writer(csvfile,delimiter=',')
-    #originalImg = loadImage("birthday-gift-cool-wassily-kandinsky-abstract.png")
+
+    #originalImg = loadImage("monalisa.png")
+
     #originalImg = loadImage("chrome.png")
+    #originalImg = loadImage("riverdale.png")
+    originalImg = loadImage("xp_background.png")
+    #originalImg = loadImage("mondrian.png")
 
-    originalImg = loadImage("riverdale.png")
-
-
-    #originalImg = loadImage("xp_background.png")
-
-    size(1300,700)
+    size(windowWidth,700)
     #print mrKVariable
     bestChromosome = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
 
@@ -63,6 +77,7 @@ def draw():
     global numImprovements
     global numMutations
     global populationArray
+    drawButton(25,25)
 
     global writer
     global pastImprovements
@@ -77,7 +92,6 @@ def draw():
     global numPolys
     global numVertices
 
-    
     hillclimber = True
     background(200)
     fill(0)
@@ -97,6 +111,15 @@ def draw():
         #chromosome2.mutatePercentChange()
         #chromosome2.megaMutate()
         #chromosome2.mutateOnePoly()
+
+        rand=random(1)
+        if(rand<0.5):
+            chromosome2.minorChangeEachPoly(0.025)
+        elif(rand<0.95):
+            chromosome2.mediumMutate()
+        else:
+            chromosome2.megaMutate()
+
         chromosome2.redrawPG()
         
         image(chromosome2.pg, 525, 25)
@@ -133,6 +156,10 @@ def draw():
         text("Improvements: "+str(numImprovements), 775, 50)
         pctImprovement = 100*(numImprovements/numMutations)
         text("Percent Improvement: "+str(pctImprovement), 775, 75)
+        #text("Population Size: "+str(len(populationArray)), 775, 100)
+        text("Children Per Generation: "+str(numChildrenPerGeneration), 775, 125)
+        text("Polygons: "+str(numPolys), 775, 150)
+        text("Vertices: "+str(numVertices), 775, 175)
     else:
         text("Original Image", 25, 20)
 
@@ -154,8 +181,12 @@ def draw():
             #c.mutatePercentChange(0.0001)
             #c.megaMutate()
             #c.mutateOnePoly()
-            c.redrawPG()
-            drawChromosome(position, c, c.fitness(originalImg))
+            #c.mutateColorOrPosition(1)
+            #c.redrawPG()
+            if c.myFitness == 0:
+                c.fitness(originalImg)
+            
+            drawChromosome(position, c, c.myFitness)
             if c.myFitness < bestFitness:
                 bestChromosome.polygonsArr = deepcopy(c.polygonsArr)
                 bestChromosome.redrawPG()
@@ -163,29 +194,37 @@ def draw():
                 #writer.writerow(str(bestFitness) + "," + str(c.myFitness) + "," + str(bestFitness-c.myFitness)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations)))
 
             position = position + 210
+
             
         populationArray = sorted(populationArray)
-        println("---------------------")
-        for c in populationArray:
-            println(c.myFitness)
+        #println("---------------------")
+        #for c in populationArray:
+            #println(c.myFitness)
             #pass
-            
-            
+
         for i in range(numChildrenPerGeneration):
             populationArray.pop()
             
+            
         childrenArray = []
+            
         for j in range(numChildrenPerGeneration):
             #println(int(random(len(populationArray))))
             #child = chooseOneRandomPolyCrossover(populationArray[int(random(len(populationArray)))], populationArray[int(random(len(populationArray)))])
             child = oneOrOtherCrossover(populationArray[int(random(len(populationArray)))], populationArray[int(random(len(populationArray)))])
+            
             #child.mediumMutate()
             #child.mutatePercentChange(0.005)
             #child.megaMutate()
-            child.mutateOnePoly()
+            #child.mutateOnePoly()
+            #child.mutateColorOrPosition(10)
+            child.minorChangeEachPoly(0.1)
             child.redrawPG()
+            
             childrenArray.append(child)
-        
+        #randomChild = childrenArray[int(random(len(childrenArray)))]
+        #randomChild.mediumMutate()
+        #randomChild.redrawPG()
         for c in childrenArray:
             populationArray.append(c)
             c = None
@@ -244,9 +283,11 @@ def bestSelection(populationArray):
 
 def drawChromosome(position, chromosome, fitness, topText=""):
     text(topText, position, 320)
-    image(chromosome.pg, position, 325)
-    text("Fitness: "+str(int(fitness)), position, 550)
-    text("Digits: "+str(len(str(int(fitness)))), position, 575)
+    image(chromosome.pg, position, 325, chromosome.pwidth/2, chromosome.pheight/2)
+    #text("Fitness: "+str(int(fitness)), position, 550)
+    #text("Digits: "+str(len(str(int(fitness)))), position, 575)
+    text(str(int(fitness)), position, 450)
+    text(str(len(str(int(fitness)))), position, 475)
 
 
 
@@ -256,9 +297,10 @@ class Chromosome:
         for i in range(numPolys):#creates the array of chromosomes
             verticesList = []
             for i in range(numVertices):
-                verticesList.append([random(w),random(h)])
+                verticesList.append([random(-w/4,w*5/4),random(-h/4, h*5/4)])
             nPolygon = Polygon(numVertices, color(random(255),random(255),random(255),random(255)),verticesList)
-            #nPolygon = Polygon(numVertices, color(0,0,0,1),verticesList)
+            #nPolygon = Polygon(numVertices, color(random(255),random(255),random(255)),verticesList)
+            #nPolygon = Polygon(numVertices, color(127,127,127,127),verticesList)
             self.polygonsArr.append(nPolygon)
         self.numVertices = numVertices
         self.numPolygons = numPolys
@@ -398,6 +440,55 @@ class Chromosome:
                 self.polygonsArr[polygonChosen].vertexCoords[i2][0] = self.pwidth
             if self.polygonsArr[polygonChosen].vertexCoords[i2][0] < 0:
                 self.polygonsArr[polygonChosen].vertexCoords[i2][0] = 0
+                
+    def mutateColorOrPosition(self, nPolysToMutate):
+        for i in range(nPolysToMutate):
+            polygonChosen = self.polygonsArr[int(random(len(self.polygonsArr)))]
+            if(random(1)<0.5):
+                r = red(polygonChosen.myColor)
+                g = green(polygonChosen.myColor)
+                b = blue(polygonChosen.myColor)
+                a = alpha(polygonChosen.myColor)
+                rand = random(4)
+                if(rand<1):
+                    r=int(random(255))
+                elif(rand<2):
+                    g=int(random(255))
+                elif(rand<3):
+                    b=int(random(255))
+                else:
+                    a=int(random(255))
+                polygonChosen.myColor=color(r,g,b,a)
+            else:
+                vtx = polygonChosen.vertexCoords[int(random(len(polygonChosen.vertexCoords)))] #for every vertex of a polygon
+                vtx[1] = random(-self.pheight/4, self.pheight*5/4) #set y to random y
+                vtx[0] = random(-self.pwidth/4, self.pheight*5/4) #set x to random x
+                
+    def minorChangeEachPoly(self, pctChange):
+        for p in self.polygonsArr:
+            if(random(1)>0.5):
+                r = red(p.myColor)
+                g = green(p.myColor)
+                b = blue(p.myColor)
+                a = alpha(p.myColor)
+                
+                r = r*random(1.0-pctChange, 1.0+pctChange)
+                g = g*random(1.0-pctChange, 1.0+pctChange)
+                b = b*random(1.0-pctChange, 1.0+pctChange)
+                a = a*random(1.0-pctChange, 1.0+pctChange)
+                
+                r=constrain(r,0,255)
+                g=constrain(g,0,255)
+                b=constrain(b,0,255)
+                a=constrain(a,1,255)
+                
+                p.myColor=color(r,g,b,a)
+            else:
+                for v in p.vertexCoords:
+                    v[0] = v[0]*random(1.0-pctChange, 1.0+pctChange)
+                    v[1] = v[1]*random(1.0-pctChange, 1.0+pctChange)
+                    v[0] = constrain(v[0],self.pwidth*-1/4,self.pwidth*5/4)
+                    v[1] = constrain(v[1],self.pheight*-1/4,self.pheight*5/4)
     
     def returnFitness(self):
         return self.myFitness
@@ -408,21 +499,29 @@ class Chromosome:
         #pixel is a one dimensional array; dont panic
         #self.display()
         chro = self.pg.get().pixels #gets access to the chromosome's pixel array
-        greenTotal = 0
-        redTotal = 0
-        blueTotal = 0
+        # greenTotal = 0
+        # redTotal = 0
+        # blueTotal = 0
         org = originalImage.pixels #.pixels is an accessible variable inside processing. 
         totalFitness = 0
         if len(org) == len(chro): #a check in case something goes wrong between the two images
             for i in  range(len(chro)):
-                greenTotal += abs(green(org[i])-green(chro[i]))
-                redTotal  += abs(red(org[i])-red(chro[i]))
-                blueTotal += abs(blue(org[i])-blue(chro[i]))
+                greenDiff = abs(green(org[i])-green(chro[i]))
+                redDiff  = abs(red(org[i])-red(chro[i]))
+                blueDiff = abs(blue(org[i])-blue(chro[i]))
                 #finds delta
-                totalFitness += sqrt((redTotal * redTotal) + (blueTotal * blueTotal) + (greenTotal * greenTotal))            
+                totalFitness += sqrt((redDiff * redDiff) + (blueDiff * blueDiff) + (greenDiff * greenDiff))            
         else:
             print "lengths do not match. "
         #print totalFitness
         self.myFitness = totalFitness
-        return totalFitness  
+        return totalFitness
+
+def drawButton(x,y):
+    stroke(255)
+    rect(x,y,500,500)
+    println("TESTTS")
+    if mouseX >=x and mouseX <=x+500 and mouseY >=y and mouseY <=y+500:
+        println("THIS IS WORKING")
+    #pass
         
