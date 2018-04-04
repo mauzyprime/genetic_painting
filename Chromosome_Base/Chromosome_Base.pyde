@@ -15,8 +15,8 @@ populationArray = []
 numPolys = 30
 numVertices = 6
 originalImg = None
-writer = csv.writer(open('data1.csv','wb'),delimiter=' ')
-writer.writerow("Test")
+writer = csv.writer(open('data2.csv','wb'))
+writer.writerow([str(1.983)])
 
 windowWidth = (110*initPop)+10
 
@@ -54,6 +54,7 @@ def setup():
 
     with open('data.csv','wb') as csvfile:
         writer = csv.writer(csvfile,delimiter=',')
+
     #originalImg = loadImage("monalisa.png")
     originalImg = loadImage("chrome.png")
     #originalImg = loadImage("riverdale.png")
@@ -89,6 +90,7 @@ def draw():
     global numChildrenPerGeneration
     global numPolys
     global numVertices
+
     hillclimber = True
     background(200)
     fill(0)
@@ -108,7 +110,9 @@ def draw():
         #chromosome2.mutatePercentChange()
         #chromosome2.megaMutate()
         #chromosome2.mutateOnePoly()
+
         rand=random(1)
+
         # if(rand<0.5):
         #     chromosome2.minorChangeEachPoly(0.05)
         # elif(rand<0.98):
@@ -147,6 +151,7 @@ def draw():
             numImprovements = numImprovements+1
             writer.writerow(str(bestFitness) + "," + str(fitness2) + "," + str(bestFitness-fitness2)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations)))
             needToSave = True
+
             
         text("Mutations: "+str(numMutations), 775, 25)
         text("Improvements: "+str(numImprovements), 775, 50)
@@ -202,7 +207,10 @@ def draw():
                 bestChromosome.redrawPG()
                 bestChromosome.fitness(originalImg)
                 numImprovements = numImprovements+1
-            position = position + 110
+                #writer.writerow(str(bestFitness) + "," + str(c.myFitness) + "," + str(bestFitness-c.myFitness)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations)))
+
+            position = position + 210
+
             
         populationArray = sorted(populationArray)
         #println("---------------------")
