@@ -12,7 +12,7 @@ bestChromosome = None
 initPop = 12
 numChildrenPerGeneration = 4
 populationArray = []
-numPolys = 50
+numPolys = 30
 numVertices = 6
 originalImg = None
 writer = csv.writer(open('data1.csv','wb'),delimiter=' ')
@@ -39,7 +39,7 @@ def setup():
     rectOver = False
     #frameRate(0.5)
     frameRate(100000000)
-    randomSeed(100)
+    #randomSeed(100)
     
     global bestChromosome
     global originalImg
@@ -55,9 +55,9 @@ def setup():
     with open('data.csv','wb') as csvfile:
         writer = csv.writer(csvfile,delimiter=',')
     #originalImg = loadImage("monalisa.png")
-    #originalImg = loadImage("chrome.png")
+    originalImg = loadImage("chrome.png")
     #originalImg = loadImage("riverdale.png")
-    originalImg = loadImage("xp_background.png")
+    #originalImg = loadImage("xp_background.png")
     #originalImg = loadImage("mondrian.png")
 
     size(windowWidth,700)
@@ -104,17 +104,17 @@ def draw():
         chromosome2 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
         chromosome2.polygonsArr = deepcopy(bestChromosome.polygonsArr)
         
-        #chromosome2.mediumMutate()
+        chromosome2.mediumMutate()
         #chromosome2.mutatePercentChange()
         #chromosome2.megaMutate()
         #chromosome2.mutateOnePoly()
         rand=random(1)
-        if(rand<0.5):
-            chromosome2.minorChangeEachPoly(0.025)
-        elif(rand<0.95):
-            chromosome2.mediumMutate()
-        else:
-            chromosome2.megaMutate()
+        # if(rand<0.5):
+        #     chromosome2.minorChangeEachPoly(0.05)
+        # elif(rand<0.98):
+        #     chromosome2.mediumMutate()
+        # else:
+        #     chromosome2.megaMutate()
             
         chromosome2.redrawPG()
         
@@ -140,12 +140,13 @@ def draw():
         text("Digits: "+str(len(str(int(fitness2)))), 525, 275)
         
         numMutations = numMutations+1
-        
+        needToSave = False
         if bestFitness > fitness2:
             bestChromosome.polygonsArr = deepcopy(chromosome2.polygonsArr)
             bestChromosome.redrawPG()
             numImprovements = numImprovements+1
             writer.writerow(str(bestFitness) + "," + str(fitness2) + "," + str(bestFitness-fitness2)+ "," + str(numImprovements) +","+str(numMutations)+","+ str(100*(numImprovements/numMutations)))
+            needToSave = True
             
         text("Mutations: "+str(numMutations), 775, 25)
         text("Improvements: "+str(numImprovements), 775, 50)
@@ -155,6 +156,10 @@ def draw():
         text("Children Per Generation: "+str(numChildrenPerGeneration), 775, 125)
         text("Polygons: "+str(numPolys), 775, 150)
         text("Vertices: "+str(numVertices), 775, 175)
+        
+        if(needToSave):
+            saveFrame("frames/####.tif")
+
     else:
         text("Original Image", 25, 20)
 
@@ -172,19 +177,30 @@ def draw():
         
         position = 10
         for c in populationArray:
+            #c2 = Chromosome(numPolys, numVertices, originalImg.height, originalImg.width)
+            #c2.polygonsArr = deepcopy(c.polygonsArr)
+        
             #c.mediumMutate()
             #c.mutatePercentChange(0.0001)
             #c.megaMutate()
             #c.mutateOnePoly()
-            #c.mutateColorOrPosition(1)
-            #c.redrawPG()
+            
+            #c2.minorChangeEachPoly(10)
+            
+            #c2.redrawPG()
             if c.myFitness == 0:
                 c.fitness(originalImg)
+            #c2.fitness(originalImg)
+            #if(c2.myFitness < c.myFitness):
+                #c.polygonsArr = deepcopy(c2.polygonsArr)
+                #c.redrawPG()
+                #c.fitness(originalImg)
             
             drawChromosome(position, c, c.myFitness)
             if c.myFitness < bestFitness:
                 bestChromosome.polygonsArr = deepcopy(c.polygonsArr)
                 bestChromosome.redrawPG()
+                bestChromosome.fitness(originalImg)
                 numImprovements = numImprovements+1
             position = position + 110
             
@@ -202,8 +218,8 @@ def draw():
             
         for j in range(numChildrenPerGeneration):
             #println(int(random(len(populationArray))))
-            #child = chooseOneRandomPolyCrossover(populationArray[int(random(len(populationArray)))], populationArray[int(random(len(populationArray)))])
-            child = oneOrOtherCrossover(populationArray[int(random(len(populationArray)))], populationArray[int(random(len(populationArray)))])
+            child = chooseOneRandomPolyCrossover(populationArray[int(random(len(populationArray)))], populationArray[int(random(len(populationArray)))])
+            #child = oneOrOtherCrossover(populationArray[int(random(len(populationArray)))], populationArray[int(random(len(populationArray)))])
             
             #child.mediumMutate()
             #child.mutatePercentChange(0.005)
@@ -211,6 +227,15 @@ def draw():
             #child.mutateOnePoly()
             #child.mutateColorOrPosition(10)
             child.minorChangeEachPoly(0.1)
+            
+            # rand=random(1)
+            # if(rand<0.5):
+            #     child.minorChangeEachPoly(0.025)
+            # elif(rand<0.98):
+            #     child.mediumMutate()
+            # else:
+            #     child.megaMutate()
+            
             child.redrawPG()
             
             childrenArray.append(child)
@@ -234,6 +259,8 @@ def draw():
         text("Children Per Generation: "+str(numChildrenPerGeneration), 775, 125)
         text("Polygons: "+str(numPolys), 775, 150)
         text("Vertices: "+str(numVertices), 775, 175)
+        
+        
 
 
 def chooseOneRandomPolyCrossover(parent1, parent2):
@@ -289,7 +316,8 @@ class Chromosome:
         for i in range(numPolys):#creates the array of chromosomes
             verticesList = []
             for i in range(numVertices):
-                verticesList.append([random(-w/4,w*5/4),random(-h/4, h*5/4)])
+                #verticesList.append([random(-w/4,w*5/4),random(-h/4, h*5/4)])
+                verticesList.append([random(0,w),random(0,w)])
             nPolygon = Polygon(numVertices, color(random(255),random(255),random(255),random(255)),verticesList)
             #nPolygon = Polygon(numVertices, color(random(255),random(255),random(255)),verticesList)
             #nPolygon = Polygon(numVertices, color(127,127,127,127),verticesList)
