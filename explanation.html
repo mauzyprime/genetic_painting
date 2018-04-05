@@ -40,34 +40,39 @@
   <p>Each computer-generated image you see cycling through is made up of a number of polygons.
   At the start of each experiment, we (the coders) pick the number of polygons in the image,
   how many vertices each polygon has, and whether the background is white or black. The computer
-  randomly seeds an image made up of our chosen number of polygons. Each polygon has a randomly chosen
+  randomly creates an image made up of our chosen number of polygons. Each polygon has a randomly chosen
   color, transparency, and location (the coordinates of each vertex.)
   The term 'image' is used a bit misleadingly here. Each image the computer creates is actually
   just a visual representation of the list of polygons the computer has created, called an array.
   Think of it like a spreadsheet, with each row representing a different polygon, with a column each for color,
   transparency, and the pixel coordinates of each of its vertices. The computer reads the spreadsheet extremely quickly
-  and renders it for each iteration of the duplicating-a-picture process. So we'll use "collection of polygons", "iteration",
+  and renders it for each iteration of the painting process. So we'll use "collection of polygons", "iteration",
   and "image" interchangeably in this explainer.</p>
   <h3>Fitness (with a brief interlude into the fact that Computers Lack Actual Eyes)</h3>
   <p>In order to get closer and closer to a copy of the target image, the computer must have a way
   of seeing how accurate the current combination of polygons is. A human could simply glance at the original
   and see what was inaccurate or in need of further detail, but software does not (really) have the capability
-  for qualitative analysis like this. The emerging field of computer vision, computers analyzing an image in its
+  for qualitative analysis like this. We use the fitness function to figure out how to go from one iteration to the next. To get better, we must have a way of
+  deciding what 'better' really is.
+  After consulting the literature, we chose a function that finds the sums of the difference between each pixel in the two images.
+  The lower the sum, the more 'fit' the image. Extrapolating from the Pythagorean theorem, we sum the differences between green, red, blue, and transparency
+  numeric values for, say, pixel 1 in the original image and pixel 1 in the computer image, and add the square root of all that to the final tally.
+  This is one of the moments we are very, very grateful for just how fast computers can do arithmetic.
+  The emerging field of computer vision, computers analyzing an image in its
   entirety instead of pixel-by-pixel, does have potential solutions to this, but they are well beyond the scope of
   this class and much harder to execute. A computer can play a Highlights magazine style spot-the-difference game holistically,
   instead of counting the number of differing pixels saying "there's a blob in image A and not in image B", but it can't quite yet
   correct the discrepencies through the building-polygons method described above. Thus, we at RCS AI delved into the
   world of fitness functions: mathematical formulas that spit out the 'fitness' of an attempted fascimile like this one.
-  After consulting the literature, we chose a function that finds the sums of the difference between each pixel in the two images.
-  The lower the sum, the more 'fit' the image. Extrapolating from the Pythagorean theorem, we sum the differences between green, red, blue, and transparency
-  numeric values for, say, pixel 1 in the original image and pixel 1 in the computer image, and add the square root of all that to the final tally.
-  This is one of the moments we are very, very grateful for just how fast computers can do arithmetic.
-  We use the fitness function to figure out how to go from one iteration to the next. To get better, we must have a way of
-  deciding what 'better' really is.</p>
+  </p>
   <h3>teenage mutant ninja functions</h3>
   <p>So how does the array change? There's no set way for an artificial intelligence algorithm to do this.
   Each method has to be specific to the scenario, whether the computer is painting, writing a Saturday Night Live sketch,
-  or developing a cancer drug chemical formula. </p>
+  or developing a cancer drug chemical formula. We wrote different options: some change the location of all the shapes
+  by a set amount, some randomly change the color and transparency of all, and some alter the characteristics of a subset
+  of the shapes. We use a combination of these techniques during different phases of the painting process (which the computer detects; see below)
+  in order to produce the most accurate result possible. If the newly created image is better than the previous, it becomes the 'current' image.
+  </p>
 
   <h3>The hills are alive....</h3>
   <h3>bonus round: deathmatch!!!!</h3>
@@ -80,9 +85,21 @@
     type thing.
   </p>
   <h2>This is cool and all but what's the point?</h2>
+  <p>Hill climbing, fitness functions, and mutation functions are the essential building blocks of the most influential breakthrough in artificial intelligence,
+  genetic algorithms. Classical genetic algorithmic solutions to this painting problem have multiple hill-climber iterators running at once, then combining
+  the best elements of all the different contests to create the contestants for the next round. The program stops after the differences between 'best versions' of
+  different rounds becomes very, very small. This system in turn powers the 'neural networks' your mother warned you about. Just kidding.
+  If you're able to read this website, you likely weren't born before 2012, when neural networks moved from 'cool idea' to 'wait this works'
+territory. Spookishly, we don't know why they work so well, at tasks like image identification, playing chess and video games, and solving large problems
+in medicine, government, and across the sciences. This project was at the end of a year's worth of graduate-level AI algorithm study, and we're very proud
+of cooking up the ingredients to neural nets ourselves, bringing our skills to right at the forefront of computer science research.  </p>
   <h2>so will AI kill us all?</h2>
   <p>If Haley Joel Osment can survive a Jude Law sci-fi Pinnochio movie, we can survive the future of the internet.
-    In all seriousness, the algorithm works better on some images than others.
+    In all seriousness, the algorithm works better on some images than others. As you'll notice in the above videos, the algorithm is able to
+    be more accurate when given target images like the Google Chrome logo, with blocks of color and not too many details. The high-resolution photograph of
+    our headmaster Dominic Andrew Affleck Randolph struggled to make out details like his eyes and nose. The Mona Lisa was somewhere in the middle- notice
+    background's colors and shapes are nearly indistinguishable from a distance, while she lacks a nose or mouth.
+    </thead>
   </p>
   <h2>References</h2>
   <p>
