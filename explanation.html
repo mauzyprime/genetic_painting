@@ -1,10 +1,24 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
 </head>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-lg-1"
 <body>
-<h2>This is the Hill We Want to Climb On: How does the AI class's Painting Project work?</h2>
-<i>Our project develops a fascimile of a given image, all by itself. But how?<i>
+<h2>This is the Hill We Want to Climb On: How does the AI class' Painting Project work?</h2>
+<p class="lead">Our project develops a fascimile of a given image, all by itself. But how?</p>
   <b>The below explanation requires zero coding knowledge!!!</b>
   <p>
     As you can see in the videos, our software magically replicates a chosen image over time.
@@ -12,19 +26,23 @@
     Each version the computer displays gets slightly more similar to the original image.
     Pretty cool, right?
   </p>
-  <h3>It's the polygons, stupid </h3>
+  <iframe width="560" height="315" src="https://www.youtube.com/embed/HNFxnlvDnFA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+  <p>
+    <i>It should be duly noted that this actually took seven hours to run! We felt you might not want to watch a seven hour video.</i>
+  </p>
+  <h3>Polygon with the wind</h3>
   <p>Each computer-generated image you see cycling through is made up of a number of polygons.
   At the start of each experiment, we (the coders) pick the number of polygons in the image,
   how many vertices each polygon has, and whether the background is white or black. The computer
   randomly seeds an image made up of our chosen number of polygons. Each polygon has a randomly chosen
-  color, transparencyy, and location (the coordinates of each vertex.)
+  color, transparency, and location (the coordinates of each vertex.)
   The term 'image' is used a bit misleadingly here. Each image the computer creates is actually
   just a visual representation of the list of polygons the computer has created, called an array.
   Think of it like a spreadsheet, with each row representing a different polygon, with a column each for color,
   transparency, and the pixel coordinates of each of its vertices. The computer reads the spreadsheet extremely quickly
   and renders it for each iteration of the duplicating-a-picture process. So we'll use "collection of polygons", "iteration",
   and "image" interchangeably in this explainer.</p>
-  <h3>Fitness(with a brief interlude into the fact that Computers Lack Actual Eyes)</h3>
+  <h3>Fitness (with a brief interlude into the fact that Computers Lack Actual Eyes)</h3>
   <p>In order to get closer and closer to a copy of the target image, the computer must have a way
   of seeing how accurate the current combination of polygons is. A human could simply glance at the original
   and see what was inaccurate or in need of further detail, but software does not (really) have the capability
@@ -53,10 +71,28 @@
     looked like the images we eagerly inputted. We putzed around with different types of mutation functions, eventually settling on the
     multiple-functions-for-different-needs strategy mentioned above. However, as our time on the project came to a close we began looking
     into traditional genetic-algorithm methods of different versions competing against each other, in a sort of natural-selection/death-match
-    type thing. 
+    type thing.
   </p>
+  <h2>This is cool and all but what's the point?</h2>
   <h2>so will AI kill us all?</h2>
-  <p>If Haley Joel Osment can survive a Jude Law sci-fy Pinnochio movie, we can survive the future of the internet.
+  <p>If Haley Joel Osment can survive a Jude Law sci-fi Pinnochio movie, we can survive the future of the internet.
+    In all seriousness, the algorithm works better on some images than others.
   </p>
+  <h2>References</h2>
+  <p>
+    We were inspired by the examples made by <a href="http://alteredqualia.com/visualization/evolve/">Altered Qualia</a>
+    and <a href="https://chriscummins.cc/s/genetics/#">Chris Cummins.</a> Special thanks to <a href="https://rogerjohansson.blog/2008/12/09/genetic-programming-mona-lisa-faq/">
+    Roger Johansson</a> for deciding on the most effective fitness function for us.
+  </p>
+  <p>
+    <i>
+      The Riverdale Country School 2017-2018 Artificial Intelligence class is Will Holzman '19, Nolan Flynn '19, and Katie Orenstein '18,
+      with faculty advisor Alex Kuntz. Explainer written by Katie.  </i>
+      <a href="http://riverdale.edu">Check out our school!</a>
+    </p>
+  </div>
+
+</div>
 </body>
+
 </html>
