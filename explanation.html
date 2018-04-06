@@ -21,7 +21,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-1"></div>
-    <div class="col-lg-1">
+    <div class="col-lg-10">
 <body>
   <b>The below explanation requires zero coding knowledge!!!</b>
   <p>
@@ -75,6 +75,18 @@
   </p>
 
   <h3>The hills are alive....</h3>
+  <p>
+    As thousands of rounds of iteration occur, the painting slowly improves. But as you'll notice from the videos,
+    it changes at different speeds. Often at the beginning it gets drastically better very fast (from absolutely horrible to vaguely in the neighborhood),
+    but then slows down. Why? This moments where the algorithm seems stumped are different for every run, since they depend on the starting
+    conditions of the run, which as we've said are randomly generated. The process of fast, and then slow, and then faster again improvement is called hill climbing.
+    Imagine the algorithm as climbing a series of hills of increasing height, the higher the hill, the more accurate the painting. The algorithm
+    can end up on a plateau when, for example, it's come very close but it's mathematically unlikely a polygon will suddenly
+    draw the Mona Lisa's eyes. The algorithm will continue to make a series of negligible changes that are hard to spot and don't make a big difference.
+    When this happens, our algorithm detects it, and strategically switches to a different type of mutation function. Hopefully this new
+    strategy will make a change drastic enough to get the algorithm out of its slump and climbing the next hill. This idea of hill
+    climbing powers a lot of modern artificial intelligence innovations.
+  </p>
   <h3>bonus round: deathmatch!!!!</h3>
   <p>
     The infrastructure of generating polygons, visualizing them, running the fitness and mutation functions, and moving on to better
@@ -89,7 +101,7 @@
   genetic algorithms. Classical genetic algorithmic solutions to this painting problem have multiple hill-climber iterators running at once, then combining
   the best elements of all the different contests to create the contestants for the next round. The program stops after the differences between 'best versions' of
   different rounds becomes very, very small. This system in turn powers the 'neural networks' your mother warned you about. Just kidding.
-  If you're able to read this website, you likely weren't born before 2012, when neural networks moved from 'cool idea' to 'wait this works'
+  In 2012, neural networks moved from 'cool, impractical idea' to 'wait this works'
 territory. Spookishly, we don't know why they work so well, at tasks like image identification, playing chess and video games, and solving large problems
 in medicine, government, and across the sciences. This project was at the end of a year's worth of graduate-level AI algorithm study, and we're very proud
 of cooking up the ingredients to neural nets ourselves, bringing our skills to right at the forefront of computer science research.  </p>
@@ -98,7 +110,7 @@ of cooking up the ingredients to neural nets ourselves, bringing our skills to r
     In all seriousness, the algorithm works better on some images than others. As you'll notice in the above videos, the algorithm is able to
     be more accurate when given target images like the Google Chrome logo, with blocks of color and not too many details. The high-resolution photograph of
     our headmaster Dominic Andrew Affleck Randolph struggled to make out details like his eyes and nose. The Mona Lisa was somewhere in the middle- notice
-    background's colors and shapes are nearly indistinguishable from a distance, while she lacks a nose or mouth.
+    background colors and shapes are nearly indistinguishable from a distance, while she lacks a nose or mouth.
     </thead>
   </p>
   <h2>References</h2>
