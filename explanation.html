@@ -12,31 +12,25 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
 </head>
-<div class="jumbotron">
+<div class="jumbotron" style="background-color:#dfc2f9;">
   <div class="container">
-<h2>This is the Hill We Want to Climb On: The Painting Project</h2>
-<p class="lead">Our project develops a fascimile of a given image, all by itself. But how?</p>
+    <h2 class="text-uppercase text-center"><strong>This is the Hill We Want to Climb On: The Painting Project</strong></h2>
+    <p class="lead text-center">Our project develops a fascimile of a given image, all by itself. But how?</p>
+  </div>
 </div>
-</div>
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-sm-1"></div>
-    <div class="col-lg-10">
+
 <body>
-  <b>The below explanation requires zero coding knowledge!!!</b>
-  <p>
-    As you can see in the videos, our software magically replicates a chosen image over time.
-    This is done through a complex series of trial-and-error.
-    Each version the computer displays gets slightly more similar to the original image.
-    Pretty cool, right?
-  </p>
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/HNFxnlvDnFA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/wIB9WVDRg3I" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/BKYhjvE6-Is" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-  <p>
-    <i>It should be duly noted that this actually took seven hours to run! We felt you might not want to watch a seven hour video.</i>
-  </p>
-  <h3>Polygon with the wind</h3>
+    <p class="lead text-center">This explainer is meant for people with little or no coding background. Welcome!</p>
+
+  <div class="container" style="background-color:#f6edff;">
+    <div class="media">
+      <div class="media-left media-top">
+        <iframe class="embed-responsive-item" width="560" height="315" src="https://www.youtube.com/embed/HNFxnlvDnFA" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        <small>It should be duly noted that the Mona Lisa actually took seven hours to run! We felt you might not want to watch a seven hour video.</small>
+
+      </div>
+      <div class="media-body">
+  <h3 class="media-heading">Polygon with the wind</h3>
   <p>Each computer-generated image you see cycling through is made up of a number of polygons.
   At the start of each experiment, we (the coders) pick the number of polygons in the image,
   how many vertices each polygon has, and whether the background is white or black. The computer
@@ -48,6 +42,11 @@
   transparency, and the pixel coordinates of each of its vertices. The computer reads the spreadsheet extremely quickly
   and renders it for each iteration of the painting process. So we'll use "collection of polygons", "iteration",
   and "image" interchangeably in this explainer.</p>
+</div>
+</div>
+</div>
+<div class="container" style="background-color:#eadbf9;">
+
   <h3>Fitness (with a brief interlude into the fact that Computers Lack Actual Eyes)</h3>
   <p>In order to get closer and closer to a copy of the target image, the computer must have a way
   of seeing how accurate the current combination of polygons is. A human could simply glance at the original
@@ -65,59 +64,86 @@
   correct the discrepencies through the building-polygons method described above. Thus, we at RCS AI delved into the
   world of fitness functions: mathematical formulas that spit out the 'fitness' of an attempted fascimile like this one.
   </p>
-  <h3>teenage mutant ninja functions</h3>
-  <p>So how does the array change? There's no set way for an artificial intelligence algorithm to do this.
+</div>
+<div class="container" style="background-color:#e6d1fc;">
+    <div class="media">
+        <div class="media-left media-middle">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/wIB9WVDRg3I" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+          <small>The Google Chrome logo. We used test images of different complexities and achieved different success rates.
+            See below in "will ai kill us all?"</small>
+  </div>
+  <div class="media-body">
+    <h3 class="media-heading">Teenage Mutant Ninja Functions</h3>
+    <p>So how does the array change? There's no set way for an artificial intelligence algorithm to do this.
   Each method has to be specific to the scenario, whether the computer is painting, writing a Saturday Night Live sketch,
   or developing a cancer drug chemical formula. We wrote different options: some change the location of all the shapes
   by a set amount, some randomly change the color and transparency of all, and some alter the characteristics of a subset
   of the shapes. We use a combination of these techniques during different phases of the painting process (which the computer detects; see below)
   in order to produce the most accurate result possible. If the newly created image is better than the previous, it becomes the 'current' image.
-  </p>
+    </p>
+</div>
+</div>
+</div>
 
-  <h3>The hills are alive....</h3>
+<div class="container" style="background-color:#e0c1ff;">
+<h3>The hills are alive....</h3>
   <p>
     As thousands of rounds of iteration occur, the painting slowly improves. But as you'll notice from the videos,
     it changes at different speeds. Often at the beginning it gets drastically better very fast (from absolutely horrible to vaguely in the neighborhood),
     but then slows down. Why? This moments where the algorithm seems stumped are different for every run, since they depend on the starting
     conditions of the run, which as we've said are randomly generated. The process of fast, and then slow, and then faster again improvement is called hill climbing.
     Imagine the algorithm as climbing a series of hills of increasing height, the higher the hill, the more accurate the painting. The algorithm
-    can end up on a plateau when, for example, it's come very close but it's mathematically unlikely a polygon will suddenly
-    draw the Mona Lisa's eyes. The algorithm will continue to make a series of negligible changes that are hard to spot and don't make a big difference.
+    can end up on a plateau when, for example, it's come very close but lacks the detail for Mona Lisa's eyes. The algorithm will continue to make a series of negligible changes that are hard to spot and don't make a big difference.
     When this happens, our algorithm detects it, and strategically switches to a different type of mutation function. Hopefully this new
     strategy will make a change drastic enough to get the algorithm out of its slump and climbing the next hill. This idea of hill
     climbing powers a lot of modern artificial intelligence innovations.
   </p>
-  <h3>bonus round: deathmatch!!!!</h3>
+</div>
+<div class="container" style="background-color:#d7afff;">
+  <h3>Bonus Round: Deathmatch!!!!</h3>
   <p>
     The infrastructure of generating polygons, visualizing them, running the fitness and mutation functions, and moving on to better
     versions took a few weeks to build, so once it finally worked we spent a few days entranced by the flashing shapes that eventually
     looked like the images we eagerly inputted. We putzed around with different types of mutation functions, eventually settling on the
     multiple-functions-for-different-needs strategy mentioned above. However, as our time on the project came to a close we began looking
     into traditional genetic-algorithm methods of different versions competing against each other, in a sort of natural-selection/death-match
-    type thing.
+    type thing. If this were a traditional scientific paper instead of a meme-filled webpage, consider this our "further research" section.
   </p>
-  <h2>This is cool and all but what's the point?</h2>
+</div>
+<div class="container" style="background-color:#bca0d8;" >
+  <div class="media">
+    <div class="media-left media-middle">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/BKYhjvE6-Is" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+<small>We couldn't resist running the algorithm on our school's headmaster, <a href="https://www.riverdale.edu/page.cfm?p=511">Dominic A. A. Randolph.</a></small>
+    </div>
+  <div class="media-body">
+  <h3 class="media-heading">This is cool and all but what's the point?</h2>
   <p>Hill climbing, fitness functions, and mutation functions are the essential building blocks of the most influential breakthrough in artificial intelligence,
   genetic algorithms. Classical genetic algorithmic solutions to this painting problem have multiple hill-climber iterators running at once, then combining
   the best elements of all the different contests to create the contestants for the next round. The program stops after the differences between 'best versions' of
-  different rounds becomes very, very small. This system in turn powers the 'neural networks' your mother warned you about. Just kidding.
+  different rounds becomes very, very small. This system in turn powers the 'neural networks' your mother warned you about.
   In 2012, neural networks moved from 'cool, impractical idea' to 'wait this works'
 territory. Spookishly, we don't know why they work so well, at tasks like image identification, playing chess and video games, and solving large problems
 in medicine, government, and across the sciences. This project was at the end of a year's worth of graduate-level AI algorithm study, and we're very proud
 of cooking up the ingredients to neural nets ourselves, bringing our skills to right at the forefront of computer science research.  </p>
-  <h2>so will AI kill us all?</h2>
-  <p>If Haley Joel Osment can survive a Jude Law sci-fi Pinnochio movie, we can survive the future of the internet.
+</div>
+</div>
+<div class="container" style="background-color:#af86d8">
+
+  <h2>So will AI kill us all?</h2>
+  <p>If Haley Joel Osment can survive a <a href="https://www.youtube.com/watch?v=_19pRsZRiz4">Jude Law sci-fi Pinnochio movie</a>, we can survive the future of the internet.
     In all seriousness, the algorithm works better on some images than others. As you'll notice in the above videos, the algorithm is able to
     be more accurate when given target images like the Google Chrome logo, with blocks of color and not too many details. The high-resolution photograph of
     our headmaster Dominic Andrew Affleck Randolph struggled to make out details like his eyes and nose. The Mona Lisa was somewhere in the middle- notice
     background colors and shapes are nearly indistinguishable from a distance, while she lacks a nose or mouth.
-    </thead>
   </p>
+</div>
+<div class="container">
   <h2>References</h2>
   <p>
     We were inspired by the examples made by <a href="http://alteredqualia.com/visualization/evolve/">Altered Qualia</a>
     and <a href="https://chriscummins.cc/s/genetics/#">Chris Cummins.</a> Special thanks to <a href="https://rogerjohansson.blog/2008/12/09/genetic-programming-mona-lisa-faq/">
-    Roger Johansson</a> for deciding on the most effective fitness function for us.
+    Roger Johansson</a> for advice on the most effective fitness function for us.
   </p>
   <p>
     <i>
@@ -125,9 +151,9 @@ of cooking up the ingredients to neural nets ourselves, bringing our skills to r
       with faculty advisor Alex Kuntz. Explainer written by Katie.  </i>
       <a href="http://riverdale.edu">Check out our school!</a>
     </p>
+
   </div>
 
-</div>
 </body>
 
 </html>
